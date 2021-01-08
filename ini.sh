@@ -76,4 +76,4 @@ foreach ($data as $i => $v) {
 	curl_close($curlSession);
 }
 
-file_put_contents('collection.json', json_encode($data));
+file_put_contents('collection.js', 'var Vinyls = ' . json_encode($data));
