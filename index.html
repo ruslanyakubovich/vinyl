@@ -46,15 +46,40 @@
 			text-align: center;
 			margin-top: -1.7em;
 		}
-		.genres font{
+
+		.genres font {
 			font-size: .9em;
 			color: #777;
 		}
-		.genres font::after{
+
+		.genres font::after {
 			content: ", ";
 		}
-		.genres font:last-of-type:after{
+
+		.genres font:last-of-type:after {
 			content: "";
+		}
+
+		.sortorder:after {
+			content: "\25b2";
+		}
+
+		.sortorder.reverse:after {
+			content: "\25bc";
+		}
+
+		.sortBy {
+			margin-bottom: 1em;
+		}
+
+		.sortBy::after {
+			content: "";
+			clear: both;
+			display: block;
+		}
+
+		.sortBy button {
+			margin: 0 .1em;
 		}
 	</style>
 </head>
@@ -62,13 +87,34 @@
 <body>
 	<h1>Виниловые пластинки на продажу</h1>
 	<div ng-app="vnl" ng-controller="customersCtrl">
-		<div ng-repeat="x in list" class="item">
+		<div class="sortBy">
+			Сортировать по
+			<!-- {{propertyName}}; reverse = {{reverse}}  -->
 
+			<button ng-click="sortBy('artist')">
+				Исполнителям
+				<span class="sortorder" ng-show="propertyName === 'artist'" ng-class="{reverse: reverse}"></span>
+			</button>
+
+			<button ng-click="sortBy('title')">Альбомам
+				<span class="sortorder" ng-show="propertyName === 'title'" ng-class="{reverse: reverse}"></span>
+			</button>
+
+			<button ng-click="sortBy('folder')">Цене
+				<span class="sortorder" ng-show="propertyName === 'folder'" ng-class="{reverse: reverse}"></span>
+			</button>
+
+			<button ng-click="sortBy('released')">Годам
+				<span class="sortorder" ng-show="propertyName === 'released'" ng-class="{reverse: reverse}"></span>
+			</button>
+		</div>
+		
+		<div ng-repeat="x in list | orderBy:propertyName:reverse" class="item">
 			<a href="{{ x.uri}}" target="_blank">
 				<img src="{{x.thumb}}">
 			</a>
 			<div class="prs">
-				<font class="rub">{{ x.notes ? x.notes : x.folder }}</font>
+				<font class="rub">{{ x.folder }}</font>
 			</div>
 			<p>
 				<a href="{{ x.uri}}" target="_blank">{{ x.tittle }}</a>
@@ -83,9 +129,20 @@
 		</div>
 	</div>
 	<script>
+		Vinyls.forEach(e => {
+			e.released = +e.released;
+			e.folder = e.notes ? +e.notes : +e.folder;
+		});
 		var app = angular.module('vnl', []);
 		app.controller('customersCtrl', function ($scope, $http) {
 			$scope.list = Vinyls;
+			$scope.propertyName = 'artist';
+			$scope.reverse = false;
+
+			$scope.sortBy = function (propertyName) {
+				$scope.reverse = ($scope.propertyName === propertyName) ? !$scope.reverse : false;
+				$scope.propertyName = propertyName;
+			};
 		});
 	</script>
 </body>
