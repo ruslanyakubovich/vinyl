@@ -5,6 +5,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Виниловые пластинки Апатиты Кировск</title>
+	<link rel="icon" href="favicon.ico" />
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 	<script src="collection.js"></script>
 	<style>
@@ -108,7 +109,7 @@
 				<span class="sortorder" ng-show="propertyName === 'released'" ng-class="{reverse: reverse}"></span>
 			</button>
 		</div>
-		
+
 		<div ng-repeat="x in list | orderBy:propertyName:reverse" class="item">
 			<a href="{{ x.uri}}" target="_blank">
 				<img src="{{x.thumb}}">
