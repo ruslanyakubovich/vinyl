@@ -1,11 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Виниловые пластинки Апатиты Кировск</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+	<script src="collection.js"></script>
+	<style>
+		.rub {
+			font-size: 1.5em;
+			background: #fff49b;
+			border-radius: .3em;
+			padding: 0 .3em;
+			color: #444;
+		}
+
+		.rub::after {
+			content: "руб.";
+			margin-left: .3em;
+			font-size: .6em;
+		}
+
+		img {
+			margin: 0 0 .5em 0;
+			min-height: 100px;
+		}
+
+		.item {
+			float: left;
+			width: 200px;
+			height: 330px;
+			overflow: auto;
+			margin: 0 .5em .5em 0;
+		}
+
+		p {
+			max-width: 90%;
+			margin: 0;
+			padding: 0;
+			font-size: .9em;
+		}
+
+		.prs {
+			text-align: center;
+			margin-top: -1.7em;
+		}
+		.genres font{
+			font-size: .9em;
+			color: #777;
+		}
+		.genres font::after{
+			content: ", ";
+		}
+		.genres font:last-of-type:after{
+			content: "";
+		}
+	</style>
 </head>
+
 <body>
-	<h1>Пластинки на продажу</h1>
+	<h1>Виниловые пластинки на продажу</h1>
+	<div ng-app="vnl" ng-controller="customersCtrl">
+		<div ng-repeat="x in list" class="item">
+
+			<a href="{{ x.uri}}" target="_blank">
+				<img src="{{x.thumb}}">
+			</a>
+			<div class="prs">
+				<font class="rub">{{ x.notes ? x.notes : x.folder }}</font>
+			</div>
+			<p>
+				<a href="{{ x.uri}}" target="_blank">{{ x.tittle }}</a>
+				<br>
+				{{ x.artist }}
+			</p>
+			{{ +x.released > 0 ? x.released + ' г.' : ''}}
+			<p class="genres">
+				<font ng-repeat="g in x.genres">{{g}}</font>
+				<font ng-repeat="s in x.styles">{{s}}</font>
+			</p>
+		</div>
+	</div>
+	<script>
+		var app = angular.module('vnl', []);
+		app.controller('customersCtrl', function ($scope, $http) {
+			$scope.list = Vinyls;
+		});
+	</script>
 </body>
+
 </html>
