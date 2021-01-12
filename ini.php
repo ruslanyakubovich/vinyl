@@ -66,10 +66,12 @@ foreach ($data as $i => $v) {
 	foreach ($j as $jk => $jv) 
 		$data[$i][$jk] = $jv;
 	
+	echo var_dump($data[$i]), "\n";
+	
 	if (rand(0,5) == rand(0,3)){
-		file_put_contents('collection.json', json_encode($data));
-		echo "sleep 2\n";
-		sleep(2);
+		file_put_contents('collection.js', 'var Vinyls = ' . json_encode($data));
+		echo "sleep\n";
+		sleep(3);
 	}
 
 	curl_close($curlSession);
