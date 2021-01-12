@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 
 <head>
 	<meta charset="UTF-8">
@@ -82,6 +82,15 @@
 		.sortBy button {
 			margin: 0 .1em;
 		}
+
+		input[type="checkbox"] {
+			position: absolute;
+			margin-left: -1.05em;
+		}
+
+		.checked-true {
+			background-color: #74ca7f;
+		}
 	</style>
 </head>
 
@@ -91,8 +100,7 @@
 			Сортировать пластинки по
 			<!-- {{propertyName}}; reverse = {{reverse}}  -->
 
-			<button ng-click="sortBy('artist')">
-				Исполнителям
+			<button ng-click="sortBy('artist')">Исполнителям
 				<span class="sortorder" ng-show="propertyName === 'artist'" ng-class="{reverse: reverse}"></span>
 			</button>
 
@@ -112,24 +120,24 @@
 		<div ng-repeat="x in list | orderBy:propertyName:reverse" class="item">
 			<div class="checked-{{x.checked}}">
 				<input type="checkbox" ng-model="x.checked">
-			<a href="{{ x.uri}}" target="_blank">
-				<img src="{{x.thumb}}">
-			</a>
-			<div class="prs">
-				<font class="rub">{{ x.folder }}</font>
+				<a href="{{ x.uri}}" target="_blank">
+					<img src="{{x.thumb}}">
+				</a>
+				<div class="prs">
+					<font class="rub">{{ x.folder }}</font>
+				</div>
+				<p>
+					<a href="{{ x.uri}}" target="_blank">{{ x.tittle }}</a>
+					<br>
+					{{ x.artist }}
+				</p>
+				{{ x.released > 0 ? x.released + ' г.' : ''}}
+				<p class="genres">
+					<font ng-repeat="g in x.genres">{{g}}</font>
+					<font ng-repeat="s in x.styles">{{s}}</font>
+				</p>
 			</div>
-			<p>
-				<a href="{{ x.uri}}" target="_blank">{{ x.tittle }}</a>
-				<br>
-				{{ x.artist }}
-			</p>
-			{{ +x.released > 0 ? x.released + ' г.' : ''}}
-			<p class="genres">
-				<font ng-repeat="g in x.genres">{{g}}</font>
-				<font ng-repeat="s in x.styles">{{s}}</font>
-			</p>
 		</div>
-	</div>
 	</div>
 	<script>
 		Vinyls.forEach(e => {
