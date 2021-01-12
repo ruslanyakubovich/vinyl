@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 
 <head>
 	<meta charset="UTF-8">
@@ -7,7 +7,7 @@
 	<title>Виниловые пластинки Апатиты Кировск</title>
 	<link rel="icon" href="favicon.ico" />
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-	<script src="collection.js"></script>
+	<script src="collection.js?210112"></script>
 	<style>
 		.rub {
 			font-size: 1.5em;
@@ -33,14 +33,18 @@
 			width: 200px;
 			height: 330px;
 			overflow: auto;
-			margin: 0 .5em .5em 0;
+			margin: 0;
+			font-size: 14px;
+		}
+
+		.item input[type="checkbox"] {
+			position: absolute;
 		}
 
 		p {
 			max-width: 90%;
 			margin: 0;
 			padding: 0;
-			font-size: .9em;
 		}
 
 		.prs {
@@ -49,8 +53,8 @@
 		}
 
 		.genres font {
-			font-size: .9em;
 			color: #777;
+			font-size: .9em;
 		}
 
 		.genres font::after {
@@ -82,6 +86,15 @@
 		.sortBy button {
 			margin: 0 .1em;
 		}
+
+		.checked-true,
+		.checked-false {
+			padding: .7em 1em;
+		}
+
+		.checked-true {
+			background-color: #74ca7f;
+		}
 	</style>
 </head>
 
@@ -91,8 +104,7 @@
 			Сортировать пластинки по
 			<!-- {{propertyName}}; reverse = {{reverse}}  -->
 
-			<button ng-click="sortBy('artist')">
-				Исполнителям
+			<button ng-click="sortBy('artist')">Исполнителям
 				<span class="sortorder" ng-show="propertyName === 'artist'" ng-class="{reverse: reverse}"></span>
 			</button>
 
@@ -107,42 +119,65 @@
 			<button ng-click="sortBy('released')">Годам
 				<span class="sortorder" ng-show="propertyName === 'released'" ng-class="{reverse: reverse}"></span>
 			</button>
+
+			&nbsp; &nbsp; &nbsp;
+			<span ng-show="CheckedCount() > 0">
+				<label>
+					(<input type="checkbox" ng-model="checkedShow"> {{CheckedCount()}}шт. <b>{{CheckedSumm}}</b> руб.)
+				</label>
+			</span>
 		</div>
 
-		<div ng-repeat="x in list | orderBy:propertyName:reverse" class="item">
-			<a href="{{ x.uri}}" target="_blank">
-				<img src="{{x.thumb}}">
-			</a>
-			<div class="prs">
-				<font class="rub">{{ x.folder }}</font>
+		<div ng-repeat="x in list | orderBy:propertyName:reverse">
+			<div class="item" ng-show="(checkedShow && x.checked) || (!checkedShow && 1)">
+				<div class="checked-{{x.checked}}">
+					<label>
+						<input type="checkbox" ng-model="x.checked">
+						<img src="{{x.thumb}}">
+					</label>
+					<div class="prs">
+						<font class="rub">{{ x.folder }}</font>
+					</div>
+					<p><a href="{{ x.uri}}" target="_blank">{{ x.artist }} &mdash; {{ x.tittle }}</a></p>
+					{{ x.released > 0 ? x.released + ' г.' : ''}}
+					<i title="{{x.country}}">{{x.labels[0].name}}</i>
+					<p class="genres">
+						<font ng-repeat="g in x.genres">{{g}}</font>
+						<font ng-repeat="s in x.styles">{{s}}</font>
+					</p>
+				</div>
 			</div>
-			<p>
-				<a href="{{ x.uri}}" target="_blank">{{ x.tittle }}</a>
-				<br>
-				{{ x.artist }}
-			</p>
-			{{ +x.released > 0 ? x.released + ' г.' : ''}}
-			<p class="genres">
-				<font ng-repeat="g in x.genres">{{g}}</font>
-				<font ng-repeat="s in x.styles">{{s}}</font>
-			</p>
 		</div>
 	</div>
 	<script>
 		Vinyls.forEach(e => {
 			e.released = +e.released;
 			e.folder = e.notes ? +e.notes : +e.folder;
+			e.checked = false;
 		});
 		var app = angular.module('vnl', []);
 		app.controller('customersCtrl', function ($scope, $http) {
 			$scope.list = Vinyls;
 			$scope.propertyName = 'artist';
 			$scope.reverse = false;
+			$scope.checkedShow = false;
+			$scope.CheckedSumm = 0;
 
 			$scope.sortBy = function (propertyName) {
 				$scope.reverse = ($scope.propertyName === propertyName) ? !$scope.reverse : false;
 				$scope.propertyName = propertyName;
 			};
+			$scope.CheckedCount = function () {
+				var c = 0;
+				$scope.CheckedSumm = 0;
+				$scope.list.forEach(e => {
+					if (e.checked) {
+						c++;
+						$scope.CheckedSumm += e.folder;
+					}
+				})
+				return c;
+			}
 		});
 	</script>
 
