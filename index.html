@@ -120,18 +120,13 @@
 		<div ng-repeat="x in list | orderBy:propertyName:reverse" class="item">
 			<div class="checked-{{x.checked}}">
 				<input type="checkbox" ng-model="x.checked">
-				<a href="{{ x.uri}}" target="_blank">
-					<img src="{{x.thumb}}">
-				</a>
+				<img src="{{x.thumb}}">
 				<div class="prs">
 					<font class="rub">{{ x.folder }}</font>
 				</div>
-				<p>
-					<a href="{{ x.uri}}" target="_blank">{{ x.tittle }}</a>
-					<br>
-					{{ x.artist }}
-				</p>
+				<p><a href="{{ x.uri}}" target="_blank">{{ x.artist }} &mdash; {{ x.tittle }}</a></p>
 				{{ x.released > 0 ? x.released + ' г.' : ''}}
+				<font ng-repeat="l in x.labels" title="{{x.country}}">{{l.name}}</font>
 				<p class="genres">
 					<font ng-repeat="g in x.genres">{{g}}</font>
 					<font ng-repeat="s in x.styles">{{s}}</font>

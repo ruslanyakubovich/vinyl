@@ -1,4 +1,3 @@
-#!/bin/php
 <?php 
 require_once('discogs_info.php');
 define('fileCSV', 'collection.csv');
@@ -20,7 +19,7 @@ $Title = [
 $folders = ['archive', 'Uncategorized'];
 
 // оставить эти значения
-$SetKeys = ["uri", "genres", "styles", "images", "thumb"];
+$SetKeys = ["uri", "genres", "styles", "thumb", "country", "labels"];
 
 function ClearKeys($keys, $arr){
 	foreach ($arr as $k => $v) 
