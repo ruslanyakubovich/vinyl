@@ -9,14 +9,6 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 	<script src="collection.js?210112"></script>
 	<style>
-		.rub {
-			font-size: 1.5em;
-			background: #fff49b;
-			border-radius: .3em;
-			padding: 0 .3em;
-			color: #444;
-		}
-
 		.rub::after {
 			content: "руб.";
 			margin-left: .3em;
@@ -39,6 +31,14 @@
 
 		.item input[type="checkbox"] {
 			position: absolute;
+		}
+
+		.item .rub {
+			font-size: 1.5em;
+			background: #fff49b;
+			border-radius: .3em;
+			padding: 0 .3em;
+			color: #444;
 		}
 
 		p {
@@ -95,6 +95,24 @@
 		.checked-true {
 			background-color: #74ca7f;
 		}
+
+		.card {
+			position: fixed;
+			right: 2em;
+			top: .5em;
+			border-radius: .7em;
+			background: #ffffff;
+			padding: .7em 2em;
+			border: 5px solid #1e07bf;
+		}
+
+		.card:hover {
+			cursor: pointer;
+		}
+
+		.card .title {
+			text-align: center;
+		}
 	</style>
 </head>
 
@@ -119,13 +137,6 @@
 			<button ng-click="sortBy('released')">Годам
 				<span class="sortorder" ng-show="propertyName === 'released'" ng-class="{reverse: reverse}"></span>
 			</button>
-
-			&nbsp; &nbsp; &nbsp;
-			<span ng-show="CheckedCount() > 0">
-				<label>
-					(<input type="checkbox" ng-model="checkedShow"> {{CheckedCount()}}шт. <b>{{CheckedSumm}}</b> руб.)
-				</label>
-			</span>
 		</div>
 
 		<div ng-repeat="x in list | orderBy:propertyName:reverse">
@@ -147,6 +158,20 @@
 					</p>
 				</div>
 			</div>
+		</div>
+
+		<div ng-show="CheckedCount() > 0">
+			<label>
+				<div class="card">
+					<div class="title">
+						<input type="checkbox" ng-model="checkedShow">
+						&nbsp;
+						<font class="rub">{{CheckedSumm}}</font>
+						&mdash;
+						{{CheckedCount()}} шт.
+					</div>
+				</div>
+			</label>
 		</div>
 	</div>
 	<script>
