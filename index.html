@@ -16,17 +16,41 @@
 		}
 
 		img {
-			margin: 0 0 .5em 0;
-			min-height: 100px;
+			width: 100%;
 		}
 
 		.item {
 			float: left;
-			width: 200px;
-			height: 330px;
+			width: 25em;
+			height: 11em;
 			overflow: auto;
 			margin: 0;
 			font-size: 14px;
+		}
+
+		.item .img {
+			float: left;
+			max-width: 7em;
+		}
+
+		.item .info {
+			margin-left: 8em;
+		}
+
+		@media (max-width: 600px) {
+			.item {
+				width: 100%;
+				height: auto;
+			}
+
+			.item .img {
+				float: left;
+				max-width: 30%;
+			}
+
+			.item .info {
+				margin-left: calc(30% + 1em);
+			}
 		}
 
 		.item input[type="checkbox"] {
@@ -77,7 +101,8 @@
 			margin-bottom: 1em;
 		}
 
-		.sortBy::after {
+		.sortBy::after,
+		.clear::after {
 			content: "";
 			clear: both;
 			display: block;
@@ -113,6 +138,13 @@
 		.card .title {
 			text-align: center;
 		}
+		@media (max-width: 600px) {
+			.card {
+				bottom: .5em;
+				right: .5em;
+				top: auto;
+			}
+		}
 	</style>
 </head>
 
@@ -141,21 +173,25 @@
 
 		<div ng-repeat="x in list | orderBy:propertyName:reverse">
 			<div class="item" ng-show="(checkedShow && x.checked) || (!checkedShow && 1)">
-				<div class="checked-{{x.checked}}">
-					<label>
-						<input type="checkbox" ng-model="x.checked">
-						<img src="{{x.thumb}}">
-					</label>
-					<div class="prs">
-						<font class="rub">{{ x.folder }}</font>
+				<div class="checked-{{x.checked}} clear">
+					<div class="img">
+						<label>
+							<input type="checkbox" ng-model="x.checked">
+							<img src="{{x.thumb}}">
+						</label>
+						<div class="prs">
+							<font class="rub">{{ x.folder }}</font>
+						</div>
 					</div>
-					<p><a href="{{ x.uri}}" target="_blank">{{ x.artist }} &mdash; {{ x.tittle }}</a></p>
-					{{ x.released > 0 ? x.released + ' г.' : ''}}
-					<i title="{{x.country}}">{{x.labels[0].name}}</i>
-					<p class="genres">
-						<font ng-repeat="g in x.genres">{{g}}</font>
-						<font ng-repeat="s in x.styles">{{s}}</font>
-					</p>
+					<div class="info">
+						<p><a href="{{ x.uri}}" target="_blank">{{ x.artist }} &mdash; {{ x.tittle }}</a></p>
+						{{ x.released > 0 ? x.released + ' г.' : ''}}
+						<i title="{{x.country}}">{{x.labels[0].name}}</i>
+						<p class="genres">
+							<font ng-repeat="g in x.genres">{{g}}</font>
+							<font ng-repeat="s in x.styles">{{s}}</font>
+						</p>
+					</div>
 				</div>
 			</div>
 		</div>
