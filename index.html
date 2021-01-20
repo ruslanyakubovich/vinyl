@@ -159,7 +159,7 @@
 
 <body>
 	<div ng-app="vnl" ng-controller="customersCtrl">
-		<div class="sortBy">
+		<div class="sortBy" ng-show="!checkedShow">
 			Сортировать пластинки по
 			<!-- {{propertyName}}; reverse = {{reverse}}  -->
 
@@ -180,37 +180,40 @@
 			</button>
 		</div>
 
-		<div ng-repeat="x in list | orderBy:propertyName:reverse">
-			<div class="item" ng-show="(checkedShow && x.checked) || (!checkedShow && 1)">
-				<div class="checked-{{x.checked}} clear">
-					<div class="img">
-						<label>
-							<input type="checkbox" ng-model="x.checked">
-							<img src="{{x.thumb}}">
-						</label>
-						<div class="prs">
-							<font class="rub">{{ x.folder }}</font>
+		<div ng-show="!checkedShow">
+			<div ng-repeat="x in list | orderBy:propertyName:reverse">
+				<div class="item">
+					<div class="checked-{{x.checked}} clear">
+						<div class="img">
+							<label>
+								<input type="checkbox" ng-model="x.checked">
+								<img src="{{x.thumb}}">
+							</label>
+							<div class="prs">
+								<font class="rub">{{ x.folder }}</font>
+							</div>
 						</div>
-					</div>
-					<div class="info">
-						<p><a href="{{ x.uri}}" target="_blank">{{ x.artist }} &mdash; {{ x.tittle }}</a></p>
-						{{ x.released > 0 ? x.released + ' г.' : ''}}
-						<i title="{{x.country}}">{{x.labels[0].name}}</i>
-						<p class="genres">
-							<font ng-repeat="g in x.genres">{{g}}</font>
-							<font ng-repeat="s in x.styles">{{s}}</font>
-						</p>
+						<div class="info">
+							<p><a href="{{ x.uri}}" target="_blank">{{ x.artist }} &mdash; {{ x.tittle }}</a></p>
+							{{ x.released > 0 ? x.released + ' г.' : ''}}
+							<i title="{{x.country}}">{{x.labels[0].name}}</i>
+							<p class="genres">
+								<font ng-repeat="g in x.genres">{{g}}</font>
+								<font ng-repeat="s in x.styles">{{s}}</font>
+							</p>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 
-		<center ng-show="CheckedCount() > 0">
+		<div ng-show="CheckedCount() > 0 && checkedShow">
 			<div class="clear"></div>
-			<br>
-			<input type="button" value="Копировать выбранное" ng-click="Copy()">
-			<textarea ng-model="CheckedStr"></textarea>
-		</center>
+			<pre>{{CheckedStr}}</pre>
+			<p>
+				Скопируйте список и отправьте <a href="https://vk.com/ya432209" target="_blank">Руслану</a>
+			</p>
+		</div>
 
 		<div ng-show="CheckedCount() > 0">
 			<label>
@@ -257,6 +260,7 @@
 				});
 				if (c == 0)
 					$scope.checkedShow = false;
+				s.push(`= ${$scope.CheckedSumm} руб`);
 				$scope.CheckedStr = s.join("\n");
 				return c;
 			}
@@ -264,9 +268,9 @@
 				var t = document.getElementsByTagName('textarea')[0];
 				t.focus();
 				t.select();
-				var range = document.createRange();  
-				range.selectNode(t);  
-				window.getSelection().addRange(range); 
+				var range = document.createRange();
+				range.selectNode(t);
+				window.getSelection().addRange(range);
 				document.execCommand('copy');
 				console.log($scope.CheckedStr);
 			}
