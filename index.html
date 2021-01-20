@@ -207,6 +207,7 @@
 
 		<center ng-show="CheckedCount() > 0">
 			<div class="clear"></div>
+			<br>
 			<input type="button" value="Копировать выбранное" ng-click="Copy()">
 			<textarea ng-model="CheckedStr"></textarea>
 		</center>
@@ -263,6 +264,9 @@
 				var t = document.getElementsByTagName('textarea')[0];
 				t.focus();
 				t.select();
+				var range = document.createRange();  
+				range.selectNode(t);  
+				window.getSelection().addRange(range); 
 				document.execCommand('copy');
 				console.log($scope.CheckedStr);
 			}
