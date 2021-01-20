@@ -9,6 +9,10 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 	<script src="collection.js?210112"></script>
 	<style>
+		:root {
+			--ColorGreen: #74ca7f;
+		}
+
 		.rub::after {
 			content: "руб.";
 			margin-left: .3em;
@@ -17,6 +21,10 @@
 
 		img {
 			width: 100%;
+		}
+
+		textarea {
+			display: none;
 		}
 
 		.item {
@@ -30,11 +38,11 @@
 
 		.item .img {
 			float: left;
-			max-width: 7em;
+			max-width: 8em;
 		}
 
 		.item .info {
-			margin-left: 8em;
+			margin-left: 9em;
 		}
 
 		@media (max-width: 600px) {
@@ -118,7 +126,7 @@
 		}
 
 		.checked-true {
-			background-color: #74ca7f;
+			background-color: var(--ColorGreen);
 		}
 
 		.card {
@@ -128,7 +136,7 @@
 			border-radius: .7em;
 			background: #ffffff;
 			padding: .7em 2em;
-			border: 5px solid #1e07bf;
+			border: 5px solid var(--ColorGreen);
 		}
 
 		.card:hover {
@@ -138,6 +146,7 @@
 		.card .title {
 			text-align: center;
 		}
+
 		@media (max-width: 600px) {
 			.card {
 				bottom: .5em;
@@ -196,6 +205,12 @@
 			</div>
 		</div>
 
+		<center ng-show="CheckedCount() > 0">
+			<div class="clear"></div>
+			<input type="button" value="Копировать выбранное" ng-click="Copy()">
+			<textarea ng-model="CheckedStr"></textarea>
+		</center>
+
 		<div ng-show="CheckedCount() > 0">
 			<label>
 				<div class="card">
@@ -223,23 +238,33 @@
 			$scope.reverse = false;
 			$scope.checkedShow = false;
 			$scope.CheckedSumm = 0;
+			$scope.CheckedStr = '';
 
 			$scope.sortBy = function (propertyName) {
 				$scope.reverse = ($scope.propertyName === propertyName) ? !$scope.reverse : false;
 				$scope.propertyName = propertyName;
 			};
 			$scope.CheckedCount = function () {
-				var c = 0;
+				var c = 0, s = [];
 				$scope.CheckedSumm = 0;
 				$scope.list.forEach(e => {
 					if (e.checked) {
 						c++;
 						$scope.CheckedSumm += e.folder;
+						s.push(`- ${e.artist} / ${e.tittle} [${e.folder}]`);
 					}
 				});
 				if (c == 0)
 					$scope.checkedShow = false;
+				$scope.CheckedStr = s.join("\n");
 				return c;
+			}
+			$scope.Copy = function () {
+				var t = document.getElementsByTagName('textarea')[0];
+				t.focus();
+				t.select();
+				document.execCommand('copy');
+				console.log($scope.CheckedStr);
 			}
 		});
 	</script>
