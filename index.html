@@ -195,7 +195,7 @@
 							</div>
 						</div>
 						<div class="info">
-							<p><a href="{{ x.uri}}" target="_blank">{{ x.artist }} &mdash; {{ x.tittle }}</a></p>
+							<p><a href="{{ x.uri}}" target="_blank">{{ x.artist }} &mdash; {{ x.title }}</a></p>
 							{{ x.released > 0 ? x.released + ' г.' : ''}}
 							<i title="{{x.country}}">{{x.labels[0].name}}</i>
 							<p class="genres">
@@ -256,7 +256,7 @@
 					if (e.checked) {
 						c++;
 						$scope.CheckedSumm += e.folder;
-						s.push(`- ${e.artist} / ${e.tittle} [${e.folder}]`);
+						s.push(`- ${e.artist} / ${e.title} [${e.folder}]`);
 					}
 				});
 				if (c == 0)

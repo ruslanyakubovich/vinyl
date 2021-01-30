@@ -7,7 +7,7 @@ define('dAuthorization', sprintf('Authorization: Discogs key=%s, secret=%s', dLo
 $Title = [
 	'ID' =>  7,
 	'artist' => 1,
-	'tittle' =>  2,
+	'title' =>  2,
 	'released' =>  6,
 	'folder' =>  8,
 	'notes' =>  11
@@ -16,7 +16,7 @@ $Title = [
 
 
 // исключить эти папки
-$folders = ['archive', 'Uncategorized'];
+$folders = ['archive', 'Uncategorized', 'кассеты'];
 
 // оставить эти значения
 $SetKeys = ["uri", "genres", "styles", "thumb", "country", "labels"];
@@ -66,7 +66,7 @@ foreach ($data as $i => $v) {
 	foreach ($j as $jk => $jv) 
 		$data[$i][$jk] = $jv;
 	
-	echo var_dump($data[$i]), "\n";
+	//echo var_dump($data[$i]), "\n";
 	
 	if (rand(0,5) == rand(0,3)){
 		file_put_contents('collection.js', 'var Vinyls = ' . json_encode($data));
