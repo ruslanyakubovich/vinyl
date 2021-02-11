@@ -2,288 +2,62 @@
 <html lang="ru">
 
 <head>
+	<title>Виниловые пластинки Апатиты Кировск</title>
+	<script src="https://unpkg.com/vue"></script>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Виниловые пластинки Апатиты Кировск</title>
 	<link rel="icon" href="favicon.ico" />
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-	<script src="collection.js?210112"></script>
-	<style>
-		:root {
-			--ColorGreen: #74ca7f;
-		}
-
-		.rub::after {
-			content: "руб.";
-			margin-left: .3em;
-			font-size: .6em;
-		}
-
-		img {
-			width: 100%;
-		}
-
-		pre {
-			max-width: 100%;
-			overflow: auto;
-		}
-
-		.item {
-			float: left;
-			width: 25em;
-			height: 11em;
-			overflow: auto;
-			margin: 0;
-			font-size: 14px;
-		}
-
-		.item .img {
-			float: left;
-			max-width: 8em;
-		}
-
-		.item .info {
-			margin-left: 9em;
-		}
-
-		@media (max-width: 600px) {
-			.item {
-				width: 100%;
-				height: auto;
-			}
-
-			.item .img {
-				float: left;
-				max-width: 30%;
-			}
-
-			.item .info {
-				margin-left: calc(30% + 1em);
-			}
-		}
-
-		.item input[type="checkbox"] {
-			position: absolute;
-		}
-
-		.item .rub {
-			font-size: 1.5em;
-			background: #fff49b;
-			border-radius: .3em;
-			padding: 0 .3em;
-			color: #444;
-		}
-
-		p {
-			max-width: 90%;
-			margin: 0;
-			padding: 0;
-		}
-
-		.prs {
-			text-align: center;
-			margin-top: -1.7em;
-		}
-
-		.genres font {
-			color: #777;
-			font-size: .9em;
-		}
-
-		.genres font::after {
-			content: ", ";
-		}
-
-		.genres font:last-of-type:after {
-			content: "";
-		}
-
-		.sortorder:after {
-			content: "\25b2";
-		}
-
-		.sortorder.reverse:after {
-			content: "\25bc";
-		}
-
-		.sortBy {
-			margin-bottom: 1em;
-		}
-
-		.sortBy::after,
-		.clear::after {
-			content: "";
-			clear: both;
-			display: block;
-		}
-
-		.sortBy button {
-			margin: 0 .1em;
-		}
-
-		.checked-true,
-		.checked-false {
-			padding: .7em 1em;
-		}
-
-		.checked-true {
-			background-color: var(--ColorGreen);
-		}
-
-		.card {
-			position: fixed;
-			right: 2em;
-			top: .5em;
-			border-radius: .7em;
-			background: #ffffff;
-			padding: .7em 2em;
-			border: 5px solid var(--ColorGreen);
-		}
-
-		.card:hover {
-			cursor: pointer;
-		}
-
-		.card .title {
-			text-align: center;
-		}
-
-		@media (max-width: 600px) {
-			.card {
-				bottom: .5em;
-				right: .5em;
-				top: auto;
-			}
-		}
-	</style>
+	<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-	<div ng-app="vnl" ng-controller="customersCtrl">
-		<div class="sortBy" ng-show="!checkedShow">
-			Сортировать пластинки по
-			<!-- {{propertyName}}; reverse = {{reverse}}  -->
-
-			<button ng-click="sortBy('artist')">Исполнителям
-				<span class="sortorder" ng-show="propertyName === 'artist'" ng-class="{reverse: reverse}"></span>
-			</button>
-
-			<button ng-click="sortBy('title')">Альбомам
-				<span class="sortorder" ng-show="propertyName === 'title'" ng-class="{reverse: reverse}"></span>
-			</button>
-
-			<button ng-click="sortBy('folder')">Цене
-				<span class="sortorder" ng-show="propertyName === 'folder'" ng-class="{reverse: reverse}"></span>
-			</button>
-
-			<button ng-click="sortBy('released')">Годам
-				<span class="sortorder" ng-show="propertyName === 'released'" ng-class="{reverse: reverse}"></span>
-			</button>
-		</div>
-
-		<div ng-show="!checkedShow">
-			<div ng-repeat="x in list | orderBy:propertyName:reverse">
-				<div class="item">
-					<div class="checked-{{x.checked}} clear">
-						<div class="img">
-							<label>
-								<input type="checkbox" ng-model="x.checked">
-								<img src="{{x.thumb}}">
-							</label>
-							<div class="prs">
-								<font class="rub">{{ x.folder }}</font>
-							</div>
+	<div id="app">
+		<div v-for="x in vinyls">
+			<div class="item">
+				<div class="clear" :class="x.checked">
+					<div class="img">
+						<label>
+							<input type="checkbox">
+							<img :src="x.thumb">
+						</label>
+						<div class="prs">
+							<font class="rub">{{ x.folder }}</font>
 						</div>
-						<div class="info">
-							<p><a href="{{ x.uri}}" target="_blank">{{ x.artist }} &mdash; {{ x.title }}</a></p>
-							{{ x.released > 0 ? x.released + ' г.' : ''}}
-							<i title="{{x.country}}">{{x.labels[0].name}}</i>
-							<p class="genres">
-								<font ng-repeat="g in x.genres">{{g}}</font>
-								<font ng-repeat="s in x.styles">{{s}}</font>
-							</p>
-						</div>
+					</div>
+					<div class="info">
+						<p><a :href="x.uri" target="_blank">{{ x.artist }} &mdash; {{ x.title }}</a></p>
+						{{ x.released > 0 ? x.released + ' г.' : ''}}
+						<i :itle="x.country">{{x.labels[0].name}}</i>
+						<p class="genres">
+							<font v-for="g in x.genres">{{g}}</font>
+							<font v-for="s in x.styles">{{s}}</font>
+						</p>
 					</div>
 				</div>
 			</div>
 		</div>
-
-		<div ng-show="CheckedCount() > 0 && checkedShow">
-			<div class="clear"></div>
-			<pre>{{CheckedStr}}</pre>
-			<p>
-				Скопируйте список и отправьте <a href="https://vk.com/ya432209" target="_blank">Руслану</a>
-			</p>
-		</div>
-
-		<div ng-show="CheckedCount() > 0">
-			<label>
-				<div class="card">
-					<div class="title">
-						<input type="checkbox" ng-model="checkedShow">
-						&nbsp;
-						<font class="rub">{{CheckedSumm}}</font>
-						&mdash;
-						{{CheckedCount()}} шт.
-					</div>
-				</div>
-			</label>
-		</div>
 	</div>
+
 	<script>
-		Vinyls.forEach(e => {
-			e.released = +e.released;
-			e.folder = e.notes ? +e.notes : +e.folder;
-			e.checked = false;
-		});
-		var app = angular.module('vnl', []);
-		app.controller('customersCtrl', function ($scope, $http) {
-			$scope.list = Vinyls;
-			$scope.propertyName = 'artist';
-			$scope.reverse = false;
-			$scope.checkedShow = false;
-			$scope.CheckedSumm = 0;
-			$scope.CheckedStr = '';
-
-			$scope.sortBy = function (propertyName) {
-				$scope.reverse = ($scope.propertyName === propertyName) ? !$scope.reverse : false;
-				$scope.propertyName = propertyName;
-			};
-			$scope.CheckedCount = function () {
-				var c = 0, s = [];
-				$scope.CheckedSumm = 0;
-				$scope.list.forEach(e => {
-					if (e.checked) {
-						c++;
-						$scope.CheckedSumm += e.folder;
-						s.push(`- ${e.artist} / ${e.title} [${e.folder}]`);
-					}
-				});
-				if (c == 0)
-					$scope.checkedShow = false;
-				s.push(`= ${$scope.CheckedSumm} руб`);
-				$scope.CheckedStr = s.join("\n");
-				return c;
+		var app = new Vue({
+			el: '#app',
+			data: {
+				vinyls: []
+			},
+			created() {
+				fetch('collection.json')
+					.then(response => response.json())
+					.then(json => {
+						this.vinyls = json;
+						this.vinyls.forEach(e => {
+							e.released = +e.released;
+							e.folder = e.notes ? +e.notes : +e.folder;
+							e.checked = false;
+						})
+					})
 			}
-			$scope.Copy = function () {
-				var t = document.getElementsByTagName('textarea')[0];
-				t.focus();
-				t.select();
-				var range = document.createRange();
-				range.selectNode(t);
-				window.getSelection().addRange(range);
-				document.execCommand('copy');
-				console.log($scope.CheckedStr);
-			}
-		});
+		})
 	</script>
-
-	<!-- Yandex.Metrika counter -->
-	<script
-		type="text/javascript"> (function (m, e, t, r, i, k, a) { m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments) }; m[i].l = 1 * new Date(); k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a) })(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym"); ym(71089129, "init", { clickmap: true, trackLinks: true, accurateTrackBounce: true, webvisor: true, trackHash: true }); </script>
-	<noscript>
-		<div><img src="https://mc.yandex.ru/watch/71089129" style="position:absolute; left:-9999px;" alt="" /></div>
-	</noscript> <!-- /Yandex.Metrika counter -->
 </body>
 
 </html>
