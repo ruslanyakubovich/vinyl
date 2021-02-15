@@ -12,12 +12,18 @@
 
 <body>
 	<div id="app">
-		<div v-for="x in vinyls">
+		<p>
+			<a @click="sortParam='artist'">Исполнитель</a> /
+			<a @click="sortParam='title'">Альбом</a> /
+			<a @click="sortParam='folder'">Цена</a>
+		</p>
+		{{ count }}:{{sum}}руб. {{checkeds}}
+		<div v-for="x in sortedList" v-bind:key="x.id">
 			<div class="item">
-				<div class="clear" :class="x.checked">
+				<div class="clear">
 					<div class="img">
 						<label>
-							<input type="checkbox">
+							<input type="checkbox" v-model="checkeds" :value="x.ID">
 							<img :src="x.thumb">
 						</label>
 						<div class="prs">
@@ -27,7 +33,7 @@
 					<div class="info">
 						<p><a :href="x.uri" target="_blank">{{ x.artist }} &mdash; {{ x.title }}</a></p>
 						{{ x.released > 0 ? x.released + ' г.' : ''}}
-						<i :itle="x.country">{{x.labels[0].name}}</i>
+						<i :title="x.country">{{x.labels[0].name}}</i>
 						<p class="genres">
 							<font v-for="g in x.genres">{{g}}</font>
 							<font v-for="s in x.styles">{{s}}</font>
@@ -42,7 +48,9 @@
 		var app = new Vue({
 			el: '#app',
 			data: {
-				vinyls: []
+				sortParam: 'artist',
+				vinyls: [],
+				checkeds: []
 			},
 			created() {
 				fetch('collection.json')
@@ -55,8 +63,34 @@
 							e.checked = false;
 						})
 					})
+			},
+			methods: {
+			},
+			computed: {
+				count() {
+					return this.checkeds.length;
+				},
+				sum() {
+					var s = 0;
+					this.vinyls.forEach(e => {
+						if (this.checkeds.indexOf(e.ID) != -1)
+							s += e.folder
+					})
+					return s;
+				},
+				sortedList() {
+					switch (this.sortParam) {
+						case 'artist': return this.vinyls.sort(sortByA);
+						case 'title': return this.vinyls.sort(sortByT);
+						case 'folder': return this.vinyls.sort(sortByF);
+						default: return this.vinyls.sort(sortByA);
+					}
+				}
 			}
 		})
+		var sortByA = (a, b) => { return (a.artist.toLowerCase() > b.artist.toLowerCase()) ? 1 : -1; };
+		var sortByT = (a, b) => { return (a.title.toLowerCase() > b.title.toLowerCase()) ? 1 : -1; };
+		var sortByF = (a, b) => { return (a.folder > b.folder) ? 1 : -1; };
 	</script>
 </body>
 
