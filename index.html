@@ -12,13 +12,29 @@
 
 <body>
 	<div id="app">
-		<p>
-			<a @click="sortParam='artist'">Исполнитель</a> /
-			<a @click="sortParam='title'">Альбом</a> /
-			<a @click="sortParam='folder'">Цена</a>
-		</p>
-		{{ count }}:{{sum}}руб. {{checkeds}}
-		<div v-for="x in sortedList" v-bind:key="x.id">
+		<ul class="menu">
+			<li>
+				<input type="search" v-model="search" placeholder="Поиск">
+			</li>
+			<li>
+				Сортировать по
+				<a @click="sortParam='artist'" :class="sortParam==='artist'? 'act' : ''">исполнителю</a>,
+				<a @click="sortParam='title'" :class="sortParam==='title'? 'act' : ''">альбому</a>,
+				<a @click="sortParam='folder'" :class="sortParam==='folder'? 'act' : ''">цене</a>
+			</li>
+			<li v-show="count>0">
+				<label>
+					<input type="checkbox" v-model="selected">
+					{{count}} шт &nbsp; <b>{{sum}}</b> руб
+				</label>
+			</li>
+		</ul>
+
+		<div v-if="selected">
+			{{checkeds}}
+		</div>
+
+		<div v-else v-for="x in sortedList" v-bind:key="x.id">
 			<div class="item">
 				<div class="clear">
 					<div class="img">
@@ -48,9 +64,11 @@
 		var app = new Vue({
 			el: '#app',
 			data: {
+				search: '',
 				sortParam: 'artist',
 				vinyls: [],
-				checkeds: []
+				checkeds: [],
+				selected: false
 			},
 			created() {
 				fetch('collection.json')
@@ -61,6 +79,7 @@
 							e.released = +e.released;
 							e.folder = e.notes ? +e.notes : +e.folder;
 							e.checked = false;
+							e.str = (e.artist + ' ' + e.title + ' ' + e.genres + ' ' + e.styles).toLowerCase();
 						})
 					})
 			},
@@ -79,11 +98,16 @@
 					return s;
 				},
 				sortedList() {
+					var srch = this.search.trim().toLowerCase();
+					var v = !srch ? this.vinyls :
+						this.vinyls.filter(item => {
+							return item.str.indexOf(srch) > -1
+						})
 					switch (this.sortParam) {
-						case 'artist': return this.vinyls.sort(sortByA);
-						case 'title': return this.vinyls.sort(sortByT);
-						case 'folder': return this.vinyls.sort(sortByF);
-						default: return this.vinyls.sort(sortByA);
+						case 'artist': return v.sort(sortByA);
+						case 'title': return v.sort(sortByT);
+						case 'folder': return v.sort(sortByF);
+						default: return v.sort(sortByA);
 					}
 				}
 			}
