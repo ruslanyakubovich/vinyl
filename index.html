@@ -37,8 +37,12 @@
 			</li>
 			<li v-show="count>0">
 				<label>
-					<input type="checkbox" v-model="selected">
-					{{count}} шт &nbsp; <b>{{sum}}</b> руб
+					<a>
+						<input type="checkbox" v-model="selected">
+						<i class="fas fa-shopping-cart"></i>
+						<b>{{sum}}</b> руб,
+						{{count}} шт 
+					</a>
 				</label>
 			</li>
 		</ul>
