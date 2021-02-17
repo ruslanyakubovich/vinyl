@@ -7,7 +7,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="icon" href="favicon.ico" />
-	<link  href="style.css?202120218" rel="stylesheet">
+	<link href="style.css?202120218" rel="stylesheet">
 	<!-- https://fontawesome.com/icons -->
 	<link href="/wf/css/all.css" rel="stylesheet">
 </head>
@@ -18,16 +18,22 @@
 			<li>
 				<input type="search" v-model="search" placeholder="Поиск">
 			</li>
-			<li> 				
-				<a @click="sortParam='artist'" :class="sortParam==='artist'? 'act' : ''" title="Сортировать по исполнителю"><i class="fas fa-user-circle"></i></a>
-				<a @click="sortParam='title'" :class="sortParam==='title'? 'act' : ''" title="Сортировать по альбому"><i class="fas fa-record-vinyl"></i></a>
-				<a @click="sortParam='folder'" :class="sortParam==='folder'? 'act' : ''" title="Сортировать по цену"><i class="fas fa-ruble-sign"></i></a>
-				<a @click="sortParam='released'" :class="sortParam==='released'? 'act' : ''"><i class="far fa-calendar-alt" title="Сортировать по году"></i></a>
+			<li>
+				<a @click="sortParam='artist'" :class="sortParam==='artist'? 'act' : ''"
+					title="Сортировать по исполнителю"><i class="fas fa-user-circle"></i></a>
+				<a @click="sortParam='title'" :class="sortParam==='title'? 'act' : ''" title="Сортировать по альбому"><i
+						class="fas fa-record-vinyl"></i></a>
+				<a @click="sortParam='folder'" :class="sortParam==='folder'? 'act' : ''" title="Сортировать по цену"><i
+						class="fas fa-ruble-sign"></i></a>
+				<a @click="sortParam='released'" :class="sortParam==='released'? 'act' : ''"><i
+						class="far fa-calendar-alt" title="Сортировать по году"></i></a>
 
-				&nbsp;  &nbsp; &nbsp; 
+				&nbsp; &nbsp; &nbsp;
 
-				<a @click="showlist='b'" :class="showlist==='b'? 'act' : ''" title="Показать картинки"><i class="fas fa-th"></i></a>  
-				<a @click="showlist='t'" :class="showlist==='t'? 'act' : ''" title="Показать таблицу"><i class="fas fa-list"></i></a>
+				<a @click="showlist='b'" :class="showlist==='b'? 'act' : ''" title="Показать картинки"><i
+						class="fas fa-th"></i></a>
+				<a @click="showlist='t'" :class="showlist==='t'? 'act' : ''" title="Показать таблицу"><i
+						class="fas fa-list"></i></a>
 			</li>
 			<li v-show="count>0">
 				<label>
@@ -97,9 +103,9 @@
 		</div>
 	</div>
 	<footer>
-		Страницу сделал 
-			<a href="https://vk.com/ya432209" target="_blank">Руслан</a> 
-			(<a href="https://t.me/yakubovich" target="_blank">Telegramm</a>)
+		Страницу сделал
+		<a href="https://vk.com/ya432209" target="_blank">Руслан</a>
+		(<a href="https://t.me/yakubovich" target="_blank">Telegramm</a>)
 	</footer>
 
 	<script>
@@ -160,7 +166,7 @@
 						case 'artist': return v.sort(sortByA);
 						case 'title': return v.sort(sortByT);
 						case 'folder': return v.sort(sortByF);
-						case 'released' : return v.sort(sortByR);
+						case 'released': return v.sort(sortByR);
 						default: return v.sort(sortByA);
 					}
 				}

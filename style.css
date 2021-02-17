@@ -198,15 +198,18 @@ p {
 		top: auto;
 	}
 }
-td{
+
+td {
 	vertical-align: top;
 	text-align: left;
 	padding-right: .5em;
 	max-width: 350px;
 }
-footer{
+
+footer {
 	text-align: center;
-    font-size: .8em;
-    color: #777;
-    margin: 1em 0;
+	font-size: .8em;
+	color: #777;
+	margin: 1em 0;
+	clear: both;
 }
