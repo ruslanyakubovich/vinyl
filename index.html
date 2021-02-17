@@ -7,7 +7,8 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="icon" href="favicon.ico" />
-	<link rel="stylesheet" href="style.css">
+	<link  href="style.css" rel="stylesheet">
+	<link href="/wf/css/all.css" rel="stylesheet">
 </head>
 
 <body>
@@ -16,16 +17,16 @@
 			<li>
 				<input type="search" v-model="search" placeholder="Поиск">
 			</li>
-			<li>
-				<a @click="showlist='b'" :class="showlist==='b'? 'act' : ''">блоки</a>
+			<li> 				
+				<a @click="sortParam='artist'" :class="sortParam==='artist'? 'act' : ''" title="Сортировать по исполнителю"><i class="fas fa-user-circle"></i></a>
+				<a @click="sortParam='title'" :class="sortParam==='title'? 'act' : ''" title="Сортировать по альбому"><i class="fas fa-record-vinyl"></i></a>
+				<a @click="sortParam='folder'" :class="sortParam==='folder'? 'act' : ''" title="Сортировать по цену"><i class="fas fa-ruble-sign"></i></a>
+				<a @click="sortParam='released'" :class="sortParam==='released'? 'act' : ''"><i class="far fa-calendar-alt" title="Сортировать по году"></i></a>
 
-				<a @click="showlist='t'" :class="showlist==='t'? 'act' : ''">список</a>
-				&nbsp;
+				&nbsp;  &nbsp; &nbsp; 
 
-				Сортировать по
-				<a @click="sortParam='artist'" :class="sortParam==='artist'? 'act' : ''">исполнителю</a>,
-				<a @click="sortParam='title'" :class="sortParam==='title'? 'act' : ''">альбому</a>,
-				<a @click="sortParam='folder'" :class="sortParam==='folder'? 'act' : ''">цене</a>
+				<a @click="showlist='b'" :class="showlist==='b'? 'act' : ''" title="Показать картинки"><i class="fas fa-th"></i></a>  
+				<a @click="showlist='t'" :class="showlist==='t'? 'act' : ''" title="Показать таблицу"><i class="fas fa-list"></i></a>
 			</li>
 			<li v-show="count>0">
 				<label>
@@ -153,6 +154,7 @@
 						case 'artist': return v.sort(sortByA);
 						case 'title': return v.sort(sortByT);
 						case 'folder': return v.sort(sortByF);
+						case 'released' : return v.sort(sortByR);
 						default: return v.sort(sortByA);
 					}
 				}
@@ -161,6 +163,7 @@
 		var sortByA = (a, b) => { return (a.artist.toLowerCase() > b.artist.toLowerCase()) ? 1 : -1; };
 		var sortByT = (a, b) => { return (a.title.toLowerCase() > b.title.toLowerCase()) ? 1 : -1; };
 		var sortByF = (a, b) => { return (a.folder > b.folder) ? 1 : -1; };
+		var sortByR = (a, b) => { return (a.released > b.released) ? 1 : -1; };
 	</script>
 </body>
 

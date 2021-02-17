@@ -1,6 +1,7 @@
 :root {
 	--ColorGreen: #74ca7f;
 	--ColorA: #548eaa;
+	--ColorB: #aa9654;
 }
 
 body {
@@ -37,12 +38,12 @@ a {
 }
 
 .menu li a {
-	border-bottom: 1px dashed;
 	cursor: pointer;
+	margin: 0 .2em;
 }
 
 .menu li a.act {
-	border-bottom: 2px solid;
+	color: var(--ColorB);
 }
 
 input[type="search"] {
@@ -196,4 +197,10 @@ p {
 		right: .5em;
 		top: auto;
 	}
+}
+td{
+	vertical-align: top;
+	text-align: left;
+	padding-right: .5em;
+	max-width: 350px;
 }
