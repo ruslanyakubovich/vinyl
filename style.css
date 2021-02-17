@@ -204,3 +204,9 @@ td{
 	padding-right: .5em;
 	max-width: 350px;
 }
+footer{
+	text-align: center;
+    font-size: .8em;
+    color: #777;
+    margin: 1em 0;
+}
