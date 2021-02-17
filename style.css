@@ -1,0 +1,215 @@
+:root {
+	--ColorGreen: #74ca7f;
+	--ColorA: #548eaa;
+	--ColorB: #aa9654;
+}
+
+body {
+	margin-top: 3.5em;
+	color: #222;
+}
+
+@media (max-width: 600px) {
+	body {
+		margin-top: 5em;
+	}
+}
+
+a {
+	color: var(--ColorA);
+}
+
+.menu {
+	list-style: none;
+	padding: .5em 1em;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	background: #fff;
+	margin: 0;
+	z-index: 999;
+	border-bottom: 1px solid #ccc;
+}
+
+.menu li {
+	display: inline-block;
+	width: calc(100% / 3 - 1em);
+}
+
+.menu li a {
+	cursor: pointer;
+	margin: 0 .2em;
+}
+
+.menu li a.act {
+	color: var(--ColorB);
+}
+
+input[type="search"] {
+	width: 90%;
+}
+
+@media (max-width: 600px) {
+	.menu li {
+		display: block;
+		width: 100%;
+	}
+	input[type="search"] {
+		width: 100%;
+	}
+}
+
+.rub::after {
+	content: "руб.";
+	margin-left: .3em;
+	font-size: .6em;
+}
+
+img {
+	width: 100%;
+}
+
+pre {
+	max-width: 100%;
+	overflow: auto;
+}
+
+.item {
+	float: left;
+	width: 25em;
+	height: 11em;
+	overflow: auto;
+	margin: 0;
+	font-size: 14px;
+}
+
+.item .img {
+	float: left;
+	max-width: 8em;
+}
+
+.item .info {
+	margin-left: 9em;
+}
+
+@media (max-width: 600px) {
+	.item {
+		width: 100%;
+		height: auto;
+	}
+	.item .img {
+		float: left;
+		max-width: 30%;
+	}
+	.item .info {
+		margin-left: calc(30% + 1em);
+	}
+}
+
+.item input[type="checkbox"] {
+	position: absolute;
+}
+
+.item .rub {
+	font-size: 1.5em;
+	background: #fff49b;
+	border-radius: .3em;
+	padding: 0 .3em;
+	color: #444;
+}
+
+p {
+	max-width: 90%;
+	margin: 0;
+	padding: 0;
+}
+
+.prs {
+	text-align: center;
+	margin-top: -1.7em;
+}
+
+.genres font {
+	color: #777;
+	font-size: .9em;
+}
+
+.genres font::after {
+	content: ", ";
+}
+
+.genres font:last-of-type:after {
+	content: "";
+}
+
+.sortorder:after {
+	content: "\25b2";
+}
+
+.sortorder.reverse:after {
+	content: "\25bc";
+}
+
+.sortBy {
+	margin-bottom: 1em;
+}
+
+.sortBy::after, .clear::after {
+	content: "";
+	clear: both;
+	display: block;
+}
+
+.sortBy button {
+	margin: 0 .1em;
+}
+
+.checked-true, .checked-false {
+	padding: .7em 1em;
+}
+
+.checked-true {
+	background-color: var(--ColorGreen);
+}
+
+.card {
+	position: fixed;
+	right: 2em;
+	top: .5em;
+	border-radius: .7em;
+	background: #ffffff;
+	padding: .7em 2em;
+	border: 5px solid var(--ColorGreen);
+}
+
+.card:hover {
+	cursor: pointer;
+}
+
+.card .title {
+	text-align: center;
+}
+
+@media (max-width: 600px) {
+	.card {
+		bottom: .5em;
+		right: .5em;
+		top: auto;
+	}
+}
+
+td {
+	vertical-align: top;
+	text-align: left;
+	padding-right: .5em;
+	max-width: 350px;
+}
+
+footer {
+	text-align: center;
+	font-size: .8em;
+	color: #777;
+	margin: 1em 0;
+	clear: both;
+}
