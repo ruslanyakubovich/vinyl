@@ -17,6 +17,11 @@
 				<input type="search" v-model="search" placeholder="Поиск">
 			</li>
 			<li>
+				<a @click="showlist='b'" :class="showlist==='b'? 'act' : ''">блоки</a>
+
+				<a @click="showlist='t'" :class="showlist==='t'? 'act' : ''">список</a>
+				&nbsp;
+
 				Сортировать по
 				<a @click="sortParam='artist'" :class="sortParam==='artist'? 'act' : ''">исполнителю</a>,
 				<a @click="sortParam='title'" :class="sortParam==='title'? 'act' : ''">альбому</a>,
@@ -31,10 +36,15 @@
 		</ul>
 
 		<div v-if="selected">
-			{{checkeds}}
+			<ol>
+				<li v-for="x in sortedList" v-bind:key="x.id">
+					<input type="checkbox" v-model="checkeds" :value="x.ID">
+					{{ x.artist }} &mdash; {{ x.title }} [{{ x.folder }}];
+				</li>
+			</ol>
 		</div>
 
-		<div v-else v-for="x in sortedList" v-bind:key="x.id">
+		<div v-else-if="showlist==='b'" v-for="x in sortedList" v-bind:key="x.id">
 			<div class="item">
 				<div class="clear">
 					<div class="img">
@@ -58,6 +68,31 @@
 				</div>
 			</div>
 		</div>
+		<div v-else-if="showlist==='t'">
+			<table>
+				<tr v-for="x in sortedList" v-bind:key="x.id">
+					<td><input type="checkbox" v-model="checkeds" :value="x.ID"></td>
+					<td>{{ x.artist }}</td>
+					<td>{{ x.title }}</td>
+					<td>
+						<font class="rub">{{ x.folder }}</font>
+					</td>
+					<td>
+						<nobr>{{ x.released > 0 ? x.released + ' г.' : ''}}</nobr>
+					</td>
+					<td>
+						<nobr>{{x.labels[0].name}}</nobr>
+					</td>
+					<td>
+						<nobr>{{ x.country }}</nobr>
+					</td>
+					<td class="genres">
+						<font v-for="g in x.genres">{{g}}</font>
+						<font v-for="s in x.styles">{{s}}</font>
+					</td>
+				</tr>
+			</table>
+		</div>
 	</div>
 
 	<script>
@@ -68,7 +103,8 @@
 				sortParam: 'artist',
 				vinyls: [],
 				checkeds: [],
-				selected: false
+				selected: false,
+				showlist: 'b',
 			},
 			created() {
 				fetch('collection.json')
@@ -87,6 +123,8 @@
 			},
 			computed: {
 				count() {
+					if (this.checkeds.length == 0)
+						this.selected = false;
 					return this.checkeds.length;
 				},
 				sum() {
@@ -99,10 +137,18 @@
 				},
 				sortedList() {
 					var srch = this.search.trim().toLowerCase();
-					var v = !srch ? this.vinyls :
-						this.vinyls.filter(item => {
-							return item.str.indexOf(srch) > -1
+					var v = [];
+
+					if (this.selected)
+						v = this.vinyls.filter(item => {
+							return this.checkeds.indexOf(item.ID) > -1
 						})
+					else
+						v = !srch ? this.vinyls :
+							this.vinyls.filter(item => {
+								return item.str.indexOf(srch) > -1
+							})
+
 					switch (this.sortParam) {
 						case 'artist': return v.sort(sortByA);
 						case 'title': return v.sort(sortByT);
