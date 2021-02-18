@@ -83,6 +83,16 @@
 		<div v-else-if="showlist==='t'">
 			<table>
 				<tr v-for="x in sortedList" v-bind:key="x.id">
+					<td></td>
+					<td>Исполнитель</td>
+					<td>Альбом</td>
+					<td>Цена</td>
+					<td>Год</td>
+					<td>Лайбл</td>
+					<td>Страна</td>
+					<td class="genres">Жанр</td>
+				</tr>
+				<tr v-for="x in sortedList" v-bind:key="x.id">
 					<td><input type="checkbox" v-model="checkeds" :value="x.ID"></td>
 					<td>{{ x.artist }}</td>
 					<td>{{ x.title }}</td>
