@@ -25,8 +25,8 @@
 						class="fas fa-record-vinyl"></i></a>
 				<a @click="sortParam='folder'" :class="sortParam==='folder'? 'act' : ''" title="Сортировать по цену"><i
 						class="fas fa-ruble-sign"></i></a>
-				<a @click="sortParam='released'" :class="sortParam==='released'? 'act' : ''"><i
-						class="far fa-calendar-alt" title="Сортировать по году"></i></a>
+				<a @click="sortParam='released'" :class="sortParam==='released'? 'act' : ''" title="Сортировать по году"><i
+						class="far fa-calendar-alt" ></i></a>
 
 				&nbsp; &nbsp; &nbsp;
 
@@ -82,12 +82,12 @@
 		</div>
 		<div v-else-if="showlist==='t'">
 			<table>
-				<tr v-for="x in sortedList" v-bind:key="x.id">
+				<tr>
 					<td></td>
-					<td>Исполнитель</td>
-					<td>Альбом</td>
-					<td>Цена</td>
-					<td>Год</td>
+					<td><i class="fas fa-user-circle"></i> Исполнитель</td>
+					<td><i class="fas fa-record-vinyl"></i> Альбом</td>
+					<td><i class="fas fa-ruble-sign"></i> Цена</td>
+					<td><i class="far fa-calendar-alt"></i> Год</td>
 					<td>Лайбл</td>
 					<td>Страна</td>
 					<td class="genres">Жанр</td>
