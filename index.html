@@ -88,14 +88,14 @@
 					<td><i class="fas fa-record-vinyl"></i> Альбом</td>
 					<td><i class="fas fa-ruble-sign"></i> Цена</td>
 					<td><i class="far fa-calendar-alt"></i> Год</td>
-					<td>Лайбл</td>
+					<td>Лейбл</td>
 					<td>Страна</td>
-					<td class="genres">Жанр</td>
+					<td>Жанр</td>
 				</tr>
 				<tr v-for="x in sortedList" v-bind:key="x.id">
 					<td><input type="checkbox" v-model="checkeds" :value="x.ID"></td>
 					<td>{{ x.artist }}</td>
-					<td>{{ x.title }}</td>
+					<td><a :href="x.uri" target="_blank">{{ x.title }}</a></td>
 					<td>
 						<font class="rub">{{ x.folder }}</font>
 					</td>
