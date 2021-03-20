@@ -2,6 +2,7 @@
 	--ColorGreen: #74ca7f;
 	--ColorA: #548eaa;
 	--ColorB: #aa9654;
+	--ColorC: #ccc;
 }
 
 body {
@@ -29,7 +30,7 @@ a {
 	background: #fff;
 	margin: 0;
 	z-index: 999;
-	border-bottom: 1px solid #ccc;
+	border-bottom: 1px solid var(--ColorC);
 }
 
 .menu li {
@@ -199,11 +200,16 @@ p {
 	}
 }
 
-td {
+td , th{
 	vertical-align: top;
 	text-align: left;
-	padding-right: .5em;
+	padding-right: .9em;
 	max-width: 350px;
+}
+th{
+	border-bottom: 1px solid var(--ColorC);
+    font-weight: normal;
+	color: var(--ColorA);
 }
 
 footer {
