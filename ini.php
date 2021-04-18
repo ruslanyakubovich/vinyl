@@ -1,6 +1,6 @@
 <?php 
 
-define('dAuthorization', sprintf('Authorization: Discogs token=%s', ''));
+define('dAuthorization', sprintf('Authorization: Discogs token=%s', file_get_contents('token')));
 define('dFolder', 'https://api.discogs.com/users/roosyak/collection/folders/%d');
 
 $fID = [
@@ -60,7 +60,7 @@ foreach ($fID as $id => $name) {
 	}
 
 	$r = array_merge($r, $d["releases"]);
-	file_put_contents('collection2.json', json_encode($r));
+	file_put_contents('collection.json', json_encode($r));
 }
 printf("ALL = %d \n\n", count($r));
 
