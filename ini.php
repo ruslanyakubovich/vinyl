@@ -1,25 +1,21 @@
 <?php 
-require_once('discogs_info.php');
-define('fileCSV', 'collection.csv');
-define('dAPI', 'https://api.discogs.com/releases/%s');
-define('dAuthorization', sprintf('Authorization: Discogs key=%s, secret=%s', dLogin, dPass));
 
-$Title = [
-	'ID' =>  7,
-	'artist' => 1,
-	'title' =>  2,
-	'released' =>  6,
-	'folder' =>  8,
-	'notes' =>  11
-	//'json' =>  12,
+define('dAuthorization', sprintf('Authorization: Discogs token=%s', ''));
+define('dFolder', 'https://api.discogs.com/users/roosyak/collection/folders/%d');
+
+$fID = [
+	// folder id => name 
+	2217526 => '100',  
+	2217532 => '200',
+	2217528 => '300',
+	2084754 => '50',
+	2217537 => '500',
+	2217529 => '500+',
 ];
 
-
-// исключить эти папки
-$folders = ['archive', 'Uncategorized', 'кассеты'];
-
 // оставить эти значения
-$SetKeys = ["uri", "genres", "styles", "thumb", "country", "labels"];
+$SetKeys = ["uri", "genres", "styles", "thumb", "country", "labels", 
+"title", "year", "artists"];
 
 function ClearKeys($keys, $arr){
 	foreach ($arr as $k => $v) 
@@ -28,53 +24,43 @@ function ClearKeys($keys, $arr){
 	return $arr;
 }
 
-$csvFile = file(fileCSV);
-unset($csvFile[0]);
-$data = [];
-$d = [];
-foreach ($csvFile as $line) {
-	$line = str_replace('₽', '', $line);
-	$d = str_getcsv($line);
-	if (in_array($d[$Title['folder']], $folders))
-		continue;
+function GetUrl($session, $url){ 
+	printf("GET \t%s \n", $url);
+	curl_setopt($session, CURLOPT_URL, $url);
+	$d = json_decode(curl_exec($session), true); 
+	printf("%d\titems\n", count($d['releases']));
 
-	$v = ['num' => count($data)];
-	foreach ($Title as $key => $value) 
-		$v[$key] = $d[$value]; 
-	$data[] = $v;
-
-	// if (count($data) == 5)
-	// 	break;
-}
-
-
-
-$count = count($data);
-foreach ($data as $i => $v) { 
-	$curlSession = curl_init();
-	curl_setopt($curlSession, CURLOPT_BINARYTRANSFER, true);
-	curl_setopt($curlSession, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($curlSession, CURLOPT_USERAGENT, 'FooBarApp/3.0');
-	curl_setopt($curlSession, CURLOPT_HTTPHEADER, [dAuthorization]);
-
-
-	$u = sprintf(dAPI, $v['ID']);
-	printf("%d/%d > %s\n", $i, $count, $u);
-	curl_setopt($curlSession, CURLOPT_URL, $u);
-	$j = json_decode(curl_exec($curlSession), true);
-	$j = ClearKeys($SetKeys, $j);
-	foreach ($j as $jk => $jv) 
-		$data[$i][$jk] = $jv;
-	
-	//echo var_dump($data[$i]), "\n";
-	
-	if (rand(0,5) == rand(0,3)){
-		file_put_contents('collection.json', json_encode($data));
-		echo "sleep\n";
-		sleep(3);
+	if (isset($d["pagination"]['urls']['next'])){ 
+		printf("NEXT \t%s \n", $url);
+		$d2 = GetUrl($session, $d["pagination"]['urls']['next']); 
+		$d["releases"] = array_merge($d["releases"], $d2["releases"]);
 	}
 
-	curl_close($curlSession);
+	return $d;
 }
 
-file_put_contents('collection.json',  json_encode($data));
+$r = [];
+$curlSession = curl_init();
+curl_setopt($curlSession, CURLOPT_BINARYTRANSFER, true);
+curl_setopt($curlSession, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($curlSession, CURLOPT_USERAGENT, 'FooBarApp/3.0');
+curl_setopt($curlSession, CURLOPT_HTTPHEADER, [dAuthorization]);
+
+foreach ($fID as $id => $name) {
+	$url = sprintf(dFolder, $id ); 
+	printf("[%s]\t%s\t%s \n", $name,   $id,  $url);
+	
+	$d = GetUrl($curlSession, $url. '/releases?per_page=100'); 
+
+	printf("[%s]\t%d \n\n", $name, count ($d["releases"]));
+
+	foreach($d["releases"] as $k => $v){
+		$d["releases"][$k]["basic_information"] = ClearKeys($SetKeys, $d["releases"][$k]["basic_information"]);
+		$d["releases"][$k]['folder_name'] = $name; 	
+	}
+
+	$r = array_merge($r, $d["releases"]);
+	file_put_contents('collection2.json', json_encode($r));
+}
+printf("ALL = %d \n\n", count($r));
+
