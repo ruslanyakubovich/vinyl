@@ -14,13 +14,28 @@ $fID = [
 ];
 
 // оставить эти значения
-$SetKeys = ["uri", "genres", "styles", "thumb", "country", "labels", 
-"title", "year", "artists"];
+$SetKeys = ["genres", "styles", "thumb", "country", "labels", 
+"title", "year", "artists", "notes"];
 
 function ClearKeys($keys, $arr){
-	foreach ($arr as $k => $v) 
+	foreach ($arr as $k => $v)
 		if (!in_array($k, $keys))
 			unset($arr[$k]);
+		
+	if (isset($arr["styles"])){
+		$arr["genres"] = array_merge($arr["styles"], $arr["genres"]);
+		$arr["genres"] = join($arr["genres"], ', ');
+		unset($arr["styles"]);
+	}
+	foreach($arr["artists"] as $k => $v)
+		$arr["artists"][$k] = $v["name"];
+	$arr["artists"] = join($arr["artists"], ', ');
+
+
+	foreach($arr["labels"] as $k => $v)
+		$arr["labels"][$k] = $v["name"];
+	$arr["labels"] = join($arr["labels"], ', ');
+	
 	return $arr;
 }
 
@@ -55,8 +70,15 @@ foreach ($fID as $id => $name) {
 	printf("[%s]\t%d \n\n", $name, count ($d["releases"]));
 
 	foreach($d["releases"] as $k => $v){
-		$d["releases"][$k]["basic_information"] = ClearKeys($SetKeys, $d["releases"][$k]["basic_information"]);
-		$d["releases"][$k]['folder_name'] = $name; 	
+		if (isset($v["notes"])){
+			foreach($v["notes"] as $k2 => $v2)
+				$v["notes"][$k2] = $v2["value"];
+			$v["notes"] = join($v["notes"], ', ');
+		}
+
+		$d["releases"][$k] = array_merge($v, ClearKeys($SetKeys, $v["basic_information"]));
+		$d["releases"][$k]['folder'] = $name; 	
+		unset($d["releases"][$k]["basic_information"] );
 	}
 
 	$r = array_merge($r, $d["releases"]);
