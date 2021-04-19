@@ -19,19 +19,19 @@
 				<input type="search" v-model="search" placeholder="Поиск">
 			</li>
 			<li>
-				<a @click="sortParam='artist'" :class="sortParam==='artist'? 'act' : ''"
+				<a @click="sortParam='artists'" :class="sortParam==='artists'? 'act' : ''"
 					title="Сортировать по исполнителю"><i class="fas fa-user-circle"></i></a>
 				<a @click="sortParam='title'" :class="sortParam==='title'? 'act' : ''" title="Сортировать по альбому"><i
 						class="fas fa-record-vinyl"></i></a>
 				<a @click="sortParam='folder'" :class="sortParam==='folder'? 'act' : ''" title="Сортировать по цену"><i
 						class="fas fa-ruble-sign"></i></a>
-				<a @click="sortParam='released'" :class="sortParam==='released'? 'act' : ''" title="Сортировать по году"><i
-						class="far fa-calendar-alt" ></i></a>
+				<a @click="sortParam='year'" :class="sortParam==='year'? 'act' : ''" title="Сортировать по году"><i
+						class="far fa-calendar-alt"></i></a>
 
 				&nbsp; &nbsp; &nbsp;
 
 				<a @click="showlist='t'" :class="showlist==='t'? 'act' : ''" title="Показать таблицу"><i
-					class="fas fa-list"></i></a>
+						class="fas fa-list"></i></a>
 				<a @click="showlist='b'" :class="showlist==='b'? 'act' : ''" title="Показать картинки"><i
 						class="fas fa-th"></i></a>
 			</li>
@@ -41,27 +41,29 @@
 						<input type="checkbox" v-model="selected">
 						<i class="fas fa-shopping-cart"></i>
 						<b>{{sum}}</b> руб,
-						{{count}} шт 
+						{{count}} шт
 					</a>
 				</label>
 			</li>
 		</ul>
 
+		
 		<div v-if="selected">
 			<ol>
 				<li v-for="x in sortedList" v-bind:key="x.id">
-					<input type="checkbox" v-model="checkeds" :value="x.ID">
-					{{ x.artist }} &mdash; {{ x.title }} [{{ x.folder }}];
+					<input type="checkbox" v-model="checkeds" :value="x.id">
+					{{ x.artists }} &mdash; {{ x.title }} [{{ x.folder }}];
 				</li>
 			</ol>
 		</div>
+		
 
 		<div v-else-if="showlist==='b'" v-for="x in sortedList" v-bind:key="x.id">
 			<div class="item">
 				<div class="clear">
 					<div class="img">
 						<label>
-							<input type="checkbox" v-model="checkeds" :value="x.ID">
+							<input type="checkbox" v-model="checkeds" :value="x.id">
 							<img :src="x.thumb">
 						</label>
 						<div class="prs">
@@ -69,12 +71,11 @@
 						</div>
 					</div>
 					<div class="info">
-						<p><a :href="x.uri" target="_blank">{{ x.artist }} &mdash; {{ x.title }}</a></p>
-						{{ x.released > 0 ? x.released + ' г.' : ''}}
-						<i :title="x.country">{{x.labels[0].name}}</i>
+						<p>{{ x.artists }} &mdash; {{ x.title }}</p>
+						{{ x.year > 0 ? x.year + ' г.' : ''}}
+						<i>{{x.labels}}</i>
 						<p class="genres">
-							<font v-for="g in x.genres">{{g}}</font>
-							<font v-for="s in x.styles">{{s}}</font>
+							<font>{{x.genres}}</font>
 						</p>
 					</div>
 				</div>
@@ -89,28 +90,23 @@
 					<th><i class="fas fa-ruble-sign"></i> Цена</th>
 					<th><i class="far fa-calendar-alt"></i> Год</th>
 					<th>Лейбл</th>
-					<th>Страна</th>
 					<th>Жанр</th>
 				</tr>
 				<tr v-for="x in sortedList" v-bind:key="x.id">
-					<td><input type="checkbox" v-model="checkeds" :value="x.ID"></td>
-					<td>{{ x.artist }}</td>
-					<td><a :href="x.uri" target="_blank">{{ x.title }}</a></td>
+					<td><input type="checkbox" v-model="checkeds" :value="x.id"></td>
+					<td>{{ x.artists }}</td>
+					<td>{{ x.title }}</td>
 					<td>
 						<font class="rub">{{ x.folder }}</font>
 					</td>
 					<td>
-						<nobr>{{ x.released > 0 ? x.released + ' г.' : ''}}</nobr>
+						<nobr>{{ x.year > 0 ? x.year : ''}}</nobr>
 					</td>
 					<td>
-						<nobr>{{x.labels[0].name}}</nobr>
-					</td>
-					<td>
-						<nobr>{{ x.country }}</nobr>
+						<nobr>{{x.labels}}</nobr>
 					</td>
 					<td class="genres">
-						<font v-for="g in x.genres">{{g}}</font>
-						<font v-for="s in x.styles">{{s}}</font>
+						<font>{{x.genres}}</font>
 					</td>
 				</tr>
 			</table>
@@ -127,7 +123,7 @@
 			el: '#app',
 			data: {
 				search: '',
-				sortParam: 'artist',
+				sortParam: 'artists',
 				vinyls: [],
 				checkeds: [],
 				selected: false,
@@ -139,10 +135,10 @@
 					.then(json => {
 						this.vinyls = json;
 						this.vinyls.forEach(e => {
-							e.released = +e.released;
+							e.year = +e.year;
 							e.folder = e.notes ? +e.notes : +e.folder;
 							e.checked = false;
-							e.str = (e.artist + ' ' + e.title + ' ' + e.genres + ' ' + e.styles).toLowerCase();
+							e.str = (e.artists + ' ' + e.title + ' ' + e.genres).toLowerCase();
 						})
 					})
 			},
@@ -157,7 +153,7 @@
 				sum() {
 					var s = 0;
 					this.vinyls.forEach(e => {
-						if (this.checkeds.indexOf(e.ID) != -1)
+						if (this.checkeds.indexOf(e.id) != -1)
 							s += e.folder
 					})
 					return s;
@@ -168,7 +164,7 @@
 
 					if (this.selected)
 						v = this.vinyls.filter(item => {
-							return this.checkeds.indexOf(item.ID) > -1
+							return this.checkeds.indexOf(item.id) > -1
 						})
 					else
 						v = !srch ? this.vinyls :
@@ -177,21 +173,26 @@
 							})
 
 					switch (this.sortParam) {
-						case 'artist': return v.sort(sortByA);
+						case 'artists': return v.sort(sortByA);
 						case 'title': return v.sort(sortByT);
 						case 'folder': return v.sort(sortByF);
-						case 'released': return v.sort(sortByR);
+						case 'year': return v.sort(sortByR);
 						default: return v.sort(sortByA);
 					}
 				}
 			}
 		})
-		var sortByA = (a, b) => { return (a.artist.toLowerCase() > b.artist.toLowerCase()) ? 1 : -1; };
+		var sortByA = (a, b) => { return (a.artists.toLowerCase() > b.artists.toLowerCase()) ? 1 : -1; };
 		var sortByT = (a, b) => { return (a.title.toLowerCase() > b.title.toLowerCase()) ? 1 : -1; };
 		var sortByF = (a, b) => { return (a.folder > b.folder) ? 1 : -1; };
-		var sortByR = (a, b) => { return (a.released > b.released) ? 1 : -1; };
+		var sortByR = (a, b) => { return (a.year > b.year) ? 1 : -1; };
 	</script>
-	<!-- Yandex.Metrika counter --> <script type="text/javascript" > (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)}; m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)}) (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym"); ym(71089129, "init", { clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:true, trackHash:true }); </script> <noscript><div><img src="https://mc.yandex.ru/watch/71089129" style="position:absolute; left:-9999px;" alt="" /></div></noscript> <!-- /Yandex.Metrika counter -->
+	<!-- Yandex.Metrika counter -->
+	<script
+		type="text/javascript"> (function (m, e, t, r, i, k, a) { m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments) }; m[i].l = 1 * new Date(); k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a) })(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym"); ym(71089129, "init", { clickmap: true, trackLinks: true, accurateTrackBounce: true, webvisor: true, trackHash: true });</script>
+	<noscript>
+		<div><img src="https://mc.yandex.ru/watch/71089129" style="position:absolute; left:-9999px;" alt="" /></div>
+	</noscript> <!-- /Yandex.Metrika counter -->
 </body>
 
 </html>
