@@ -7,7 +7,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="icon" href="favicon.ico" />
-	<link href="style.css?202120218" rel="stylesheet">
+	<link href="style.css?20210423" rel="stylesheet">
 	<!-- https://fontawesome.com/icons -->
 	<link href="/wf/css/all.css" rel="stylesheet">
 </head>
@@ -28,7 +28,17 @@
 				<a @click="sortParam='year'" :class="sortParam==='year'? 'act' : ''" title="Сортировать по году"><i
 						class="far fa-calendar-alt"></i></a>
 
+				&nbsp;
+
+				<a @click="sortASC= !sortASC">
+					<i v-if="sortASC" class="fas fa-sort-alpha-down"></i>
+					<i v-else class="fas fa-sort-alpha-up-alt"></i>
+				</a>
+
+
+
 				&nbsp; &nbsp; &nbsp;
+
 
 				<a @click="showlist='t'" :class="showlist==='t'? 'act' : ''" title="Показать таблицу"><i
 						class="fas fa-list"></i></a>
@@ -47,7 +57,7 @@
 			</li>
 		</ul>
 
-		
+
 		<div v-if="selected">
 			<ol>
 				<li v-for="x in sortedList" v-bind:key="x.id">
@@ -56,7 +66,7 @@
 				</li>
 			</ol>
 		</div>
-		
+
 
 		<div v-else-if="showlist==='b'" v-for="x in sortedList" v-bind:key="x.id">
 			<div class="item">
@@ -85,10 +95,14 @@
 			<table>
 				<tr>
 					<th></th>
-					<th><i class="fas fa-user-circle"></i> Исполнитель</th>
-					<th><i class="fas fa-record-vinyl"></i> Альбом</th>
-					<th><i class="fas fa-ruble-sign"></i> Цена</th>
-					<th><i class="far fa-calendar-alt"></i> Год</th>
+					<th :class="sortParam==='artists'? 'act' : ''" @click="sortParam='artists'"><i
+							class="fas fa-user-circle"></i> Исполнитель</th>
+					<th :class="sortParam==='title'? 'act' : ''" @click="sortParam='title'"><i
+							class="fas fa-record-vinyl"></i> Альбом</th>
+					<th :class="sortParam==='folder'? 'act' : ''" @click="sortParam='folder'"><i
+							class="fas fa-ruble-sign"></i> Цена</th>
+					<th :class="sortParam==='year'? 'act' : ''" @click="sortParam='year'"><i
+							class="far fa-calendar-alt"></i> Год</th>
 					<th>Лейбл</th>
 					<th>Жанр</th>
 				</tr>
@@ -119,11 +133,26 @@
 	</footer>
 
 	<script>
+
+		const sortFNASC = {
+			'artists': (a, b) => { return (a.artists.toLowerCase() > b.artists.toLowerCase()) ? 1 : -1; },
+			'title': (a, b) => { return (a.title.toLowerCase() > b.title.toLowerCase()) ? 1 : -1; },
+			'folder': (a, b) => { return (a.folder > b.folder) ? 1 : -1; },
+			'year': (a, b) => { return (a.year > b.year) ? 1 : -1; }
+		};
+		const sortFNDESC = {
+			'artists': (a, b) => { return (a.artists.toLowerCase() < b.artists.toLowerCase()) ? 1 : -1; },
+			'title': (a, b) => { return (a.title.toLowerCase() < b.title.toLowerCase()) ? 1 : -1; },
+			'folder': (a, b) => { return (a.folder < b.folder) ? 1 : -1; },
+			'year': (a, b) => { return (a.year < b.year) ? 1 : -1; }
+		};
+
 		var app = new Vue({
 			el: '#app',
 			data: {
 				search: '',
 				sortParam: 'artists',
+				sortASC: true,
 				vinyls: [],
 				checkeds: [],
 				selected: false,
@@ -171,21 +200,15 @@
 							this.vinyls.filter(item => {
 								return item.str.indexOf(srch) > -1
 							})
+					if (this.sortASC)
+						return v.sort(sortFNASC[this.sortParam])
+					else
+						return v.sort(sortFNDESC[this.sortParam])
 
-					switch (this.sortParam) {
-						case 'artists': return v.sort(sortByA);
-						case 'title': return v.sort(sortByT);
-						case 'folder': return v.sort(sortByF);
-						case 'year': return v.sort(sortByR);
-						default: return v.sort(sortByA);
-					}
 				}
 			}
 		})
-		var sortByA = (a, b) => { return (a.artists.toLowerCase() > b.artists.toLowerCase()) ? 1 : -1; };
-		var sortByT = (a, b) => { return (a.title.toLowerCase() > b.title.toLowerCase()) ? 1 : -1; };
-		var sortByF = (a, b) => { return (a.folder > b.folder) ? 1 : -1; };
-		var sortByR = (a, b) => { return (a.year > b.year) ? 1 : -1; };
+
 	</script>
 	<!-- Yandex.Metrika counter -->
 	<script
