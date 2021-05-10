@@ -6,18 +6,30 @@
 }
 
 body {
-	margin-top: 3.5em;
+	margin-top: 2.5em;
 	color: #333;
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF UI Text", "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+}
+
+.headerinfo {
+	text-align: right;
+	font-size: .9em;
+	max-width: 100%;
+	margin-bottom: .7em;
 }
 
 @media (max-width: 600px) {
 	body {
 		margin-top: 5em;
-	}
+	} 
 }
 
 a {
 	color: var(--ColorA);
+}
+
+p a{
+	text-decoration: none;
 }
 
 .menu {
@@ -169,7 +181,7 @@ footer {
 	max-width: 70px;
 }
 
-td i.fas, td i.far, p i.fas, p i.far {
+td i.fas, td i.far, p i.fas, p i.far, p i.fab {
 	color: #777;
 	font-size: 0.8em;
 }
