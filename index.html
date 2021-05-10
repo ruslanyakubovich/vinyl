@@ -7,7 +7,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="icon" href="favicon.ico" />
-	<link href="style.css?20210423" rel="stylesheet">
+	<link href="style.css?210510" rel="stylesheet">
 	<!-- https://fontawesome.com/icons -->
 	<link href="/wf/css/all.css" rel="stylesheet">
 </head>
@@ -39,9 +39,11 @@
 
 				&nbsp; &nbsp; &nbsp;
 
-
+				<!-- вид списка-->
 				<a @click="showlist='t'" :class="showlist==='t'? 'act' : ''" title="Показать таблицу"><i
 						class="fas fa-list"></i></a>
+				<a @click="showlist='l'" :class="showlist==='l'? 'act' : ''" title="Показать таблицу с картинками"><i
+						class="fas fa-th-list"></i></a>
 				<a @click="showlist='b'" :class="showlist==='b'? 'act' : ''" title="Показать картинки"><i
 						class="fas fa-th"></i></a>
 			</li>
@@ -125,6 +127,46 @@
 				</tr>
 			</table>
 		</div>
+		<div v-else-if="showlist==='l'">
+			<table>
+				<tr>
+					<th></th>
+					<th></th>
+					<th>
+						<a :class="sortParam==='artists'? 'act' : ''" @click="sortParam='artists'">Исполнитель</a>
+						/
+						<a :class="sortParam==='title'? 'act' : ''" @click="sortParam='title'"> Альбом</a>
+					</th>
+					<th :class="sortParam==='folder'? 'act' : ''" @click="sortParam='folder'"><i
+							class="fas fa-ruble-sign"></i> Цена</th>
+					<th :class="sortParam==='year'? 'act' : ''" @click="sortParam='year'"><i
+							class="far fa-calendar-alt"></i> Год</th>
+					<th>Лейбл/Жанр</th>
+				</tr>
+				<tr v-for="x in sortedList" v-bind:key="x.id">
+					<td><input type="checkbox" v-model="checkeds" :value="x.id"></td>
+					<td class="img"><img :src="x.thumb"></td>
+					<td>
+						<span :class="sortParam==='title'? 'act' : ''">{{ x.title }}<br></span>
+						<span :class="sortParam==='artists'? 'act' : ''"><i class="fas fa-user-circle"></i> {{ x.artists
+							}}</span>
+					</td>
+					<td>
+						<font class="rub">{{ x.folder }}</font>
+					</td>
+					<td>
+						<nobr>{{ x.year > 0 ? x.year : ''}}</nobr>
+					</td>
+					<td>
+						{{x.labels}}
+						&nbsp;
+						<span class="genres">
+							<font>{{x.genres}}</font>
+						</span>
+					</td>
+				</tr>
+			</table>
+		</div>
 	</div>
 	<footer>
 		Страницу сделал
@@ -156,7 +198,7 @@
 				vinyls: [],
 				checkeds: [],
 				selected: false,
-				showlist: 't',
+				showlist: 'l',
 			},
 			created() {
 				fetch('collection.json')
@@ -167,7 +209,7 @@
 							e.year = +e.year;
 							e.folder = e.notes ? +e.notes : +e.folder;
 							e.checked = false;
-							e.str = (e.artists + ' ' + e.title + ' ' + e.genres).toLowerCase();
+							e.str = (e.artists + ' ' + e.title + ' ' + e.labels + ' ' + e.genres).toLowerCase();
 						})
 					})
 			},

@@ -219,3 +219,7 @@ footer {
 	margin: 1em 0;
 	clear: both;
 }
+
+.img{
+	max-width: 70px;
+}
