@@ -7,7 +7,7 @@
 
 body {
 	margin-top: 3.5em;
-	color: #222;
+	color: #333;
 }
 
 @media (max-width: 600px) {
@@ -144,71 +144,16 @@ p {
 	content: "";
 }
 
-.sortorder:after {
-	content: "\25b2";
-}
-
-.sortorder.reverse:after {
-	content: "\25bc";
-}
-
-.sortBy {
-	margin-bottom: 1em;
-}
-
-.sortBy::after, .clear::after {
-	content: "";
-	clear: both;
-	display: block;
-}
-
-.sortBy button {
-	margin: 0 .1em;
-}
-
-.checked-true, .checked-false {
-	padding: .7em 1em;
-}
-
-.checked-true {
-	background-color: var(--ColorGreen);
-}
-
-.card {
-	position: fixed;
-	right: 2em;
-	top: .5em;
-	border-radius: .7em;
-	background: #ffffff;
-	padding: .7em 2em;
-	border: 5px solid var(--ColorGreen);
-}
-
-.card:hover {
-	cursor: pointer;
-}
-
-.card .title {
-	text-align: center;
-}
-
-@media (max-width: 600px) {
-	.card {
-		bottom: .5em;
-		right: .5em;
-		top: auto;
-	}
-}
-
-td , th{
+td, th {
 	vertical-align: top;
 	text-align: left;
 	padding-right: .9em;
 	max-width: 350px;
 }
-th{
+
+th {
 	border-bottom: 1px solid var(--ColorC);
-    font-weight: normal;
+	font-weight: normal;
 	color: var(--ColorA);
 }
 
@@ -220,6 +165,11 @@ footer {
 	clear: both;
 }
 
-.img{
+.img {
 	max-width: 70px;
+}
+
+td i.fas, td i.far, p i.fas, p i.far {
+	color: #777;
+	font-size: 0.8em;
 }

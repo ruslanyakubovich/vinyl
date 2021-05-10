@@ -19,13 +19,13 @@
 				<input type="search" v-model="search" placeholder="Поиск">
 			</li>
 			<li>
-				<a @click="sortParam='artists'" :class="sortParam==='artists'? 'act' : ''"
-					title="Сортировать по исполнителю"><i class="fas fa-user-circle"></i></a>
-				<a @click="sortParam='title'" :class="sortParam==='title'? 'act' : ''" title="Сортировать по альбому"><i
+				<a @click="sortParam='artists'" :class="ca('artists')" title="Сортировать по исполнителю"><i
+						class="fas fa-user-circle"></i></a>
+				<a @click="sortParam='title'" :class="ca('title')" title="Сортировать по альбому"><i
 						class="fas fa-record-vinyl"></i></a>
-				<a @click="sortParam='folder'" :class="sortParam==='folder'? 'act' : ''" title="Сортировать по цену"><i
+				<a @click="sortParam='folder'" :class="ca('folder')" title="Сортировать по цену"><i
 						class="fas fa-ruble-sign"></i></a>
-				<a @click="sortParam='year'" :class="sortParam==='year'? 'act' : ''" title="Сортировать по году"><i
+				<a @click="sortParam='year'" :class="ca('year')" title="Сортировать по году"><i
 						class="far fa-calendar-alt"></i></a>
 
 				&nbsp;
@@ -34,8 +34,6 @@
 					<i v-if="sortASC" class="fas fa-sort-alpha-down"></i>
 					<i v-else class="fas fa-sort-alpha-up-alt"></i>
 				</a>
-
-
 
 				&nbsp; &nbsp; &nbsp;
 
@@ -59,52 +57,40 @@
 			</li>
 		</ul>
 
-
-		<div v-if="selected">
-			<ol>
-				<li v-for="x in sortedList" v-bind:key="x.id">
-					<input type="checkbox" v-model="checkeds" :value="x.id">
-					{{ x.artists }} &mdash; {{ x.title }} [{{ x.folder }}];
-				</li>
-			</ol>
-		</div>
-
-
-		<div v-else-if="showlist==='b'" v-for="x in sortedList" v-bind:key="x.id">
-			<div class="item">
-				<div class="clear">
-					<div class="img">
-						<label>
-							<input type="checkbox" v-model="checkeds" :value="x.id">
-							<img :src="x.thumb">
-						</label>
-						<div class="prs">
-							<font class="rub">{{ x.folder }}</font>
+		<div v-show="showlist==='b'">
+			<div v-for="x in sortedList" v-bind:key="x.id">
+				<div class="item">
+					<div class="clear">
+						<div class="img">
+							<label>
+								<input type="checkbox" v-model="checkeds" :value="x.id">
+								<img :src="x.thumb">
+							</label>
 						</div>
-					</div>
-					<div class="info">
-						<p>{{ x.artists }} &mdash; {{ x.title }}</p>
-						{{ x.year > 0 ? x.year + ' г.' : ''}}
-						<i>{{x.labels}}</i>
-						<p class="genres">
-							<font>{{x.genres}}</font>
-						</p>
+						<div class="info">
+							<p :class="ca('artists')"><i class="fas fa-user-circle"></i> {{ x.artists }}</p>
+							<p :class="ca('title')"><i class="fas fa-record-vinyl"></i> {{ x.title }}</p>
+							<p :class="ca('folder')"><i class="fas fa-ruble-sign"></i> {{ x.folder }} руб.</p>
+							<p :class="ca('year')"><i class="far fa-calendar-alt"></i> {{ x.year > 0 ? x.year + ' г.' :
+								''}}</p>
+							{{x.labels}}
+							<span class="genres">
+								<font>{{x.genres}}</font>
+							</span>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div v-else-if="showlist==='t'">
+		<div v-show="showlist==='t'">
 			<table>
 				<tr>
 					<th></th>
-					<th :class="sortParam==='artists'? 'act' : ''" @click="sortParam='artists'"><i
-							class="fas fa-user-circle"></i> Исполнитель</th>
-					<th :class="sortParam==='title'? 'act' : ''" @click="sortParam='title'"><i
-							class="fas fa-record-vinyl"></i> Альбом</th>
-					<th :class="sortParam==='folder'? 'act' : ''" @click="sortParam='folder'"><i
-							class="fas fa-ruble-sign"></i> Цена</th>
-					<th :class="sortParam==='year'? 'act' : ''" @click="sortParam='year'"><i
-							class="far fa-calendar-alt"></i> Год</th>
+					<th :class="ca('artists')" @click="sortParam='artists'"><i class="fas fa-user-circle"></i>
+						Исполнитель</th>
+					<th :class="ca('title')" @click="sortParam='title'"><i class="fas fa-record-vinyl"></i> Альбом</th>
+					<th :class="ca('folder')" @click="sortParam='folder'"><i class="fas fa-ruble-sign"></i> Цена</th>
+					<th :class="ca('year')" @click="sortParam='year'"><i class="far fa-calendar-alt"></i> Год</th>
 					<th>Лейбл</th>
 					<th>Жанр</th>
 				</tr>
@@ -127,28 +113,26 @@
 				</tr>
 			</table>
 		</div>
-		<div v-else-if="showlist==='l'">
+		<div v-show="showlist==='l'">
 			<table>
 				<tr>
 					<th></th>
 					<th></th>
 					<th>
-						<a :class="sortParam==='artists'? 'act' : ''" @click="sortParam='artists'">Исполнитель</a>
+						<a :class="ca('artists')" @click="sortParam='artists'">Исполнитель</a>
 						/
-						<a :class="sortParam==='title'? 'act' : ''" @click="sortParam='title'"> Альбом</a>
+						<a :class="ca('title')" @click="sortParam='title'"> Альбом</a>
 					</th>
-					<th :class="sortParam==='folder'? 'act' : ''" @click="sortParam='folder'"><i
-							class="fas fa-ruble-sign"></i> Цена</th>
-					<th :class="sortParam==='year'? 'act' : ''" @click="sortParam='year'"><i
-							class="far fa-calendar-alt"></i> Год</th>
+					<th :class="ca('folder')" @click="sortParam='folder'"><i class="fas fa-ruble-sign"></i> Цена</th>
+					<th :class="ca('year')" @click="sortParam='year'"><i class="far fa-calendar-alt"></i> Год</th>
 					<th>Лейбл/Жанр</th>
 				</tr>
 				<tr v-for="x in sortedList" v-bind:key="x.id">
 					<td><input type="checkbox" v-model="checkeds" :value="x.id"></td>
 					<td class="img"><img :src="x.thumb"></td>
 					<td>
-						<span :class="sortParam==='title'? 'act' : ''">{{ x.title }}<br></span>
-						<span :class="sortParam==='artists'? 'act' : ''"><i class="fas fa-user-circle"></i> {{ x.artists
+						<span :class="ca('title')"><i class="fas fa-record-vinyl"></i> {{ x.title }}<br></span>
+						<span :class="ca('artists')"><i class="fas fa-user-circle"></i> {{ x.artists
 							}}</span>
 					</td>
 					<td>
@@ -214,6 +198,9 @@
 					})
 			},
 			methods: {
+				ca(k) {
+					return this.sortParam === k ? 'act' : '';
+				}
 			},
 			computed: {
 				count() {
@@ -233,15 +220,17 @@
 					var srch = this.search.trim().toLowerCase();
 					var v = [];
 
-					if (this.selected)
+					if (srch)
+						v = this.vinyls.filter(item => {
+							return item.str.indexOf(srch) > -1
+						})
+					else if (this.selected)
 						v = this.vinyls.filter(item => {
 							return this.checkeds.indexOf(item.id) > -1
 						})
 					else
-						v = !srch ? this.vinyls :
-							this.vinyls.filter(item => {
-								return item.str.indexOf(srch) > -1
-							})
+						v = this.vinyls;
+
 					if (this.sortASC)
 						return v.sort(sortFNASC[this.sortParam])
 					else
