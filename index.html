@@ -56,14 +56,13 @@
 				</label>
 			</li>
 		</ul>
-		<noindex>
-			<p class="headerinfo">
-				По всем вопросам пишите
-				<a href="https://vk.com/ya432209" target="_blank"><i class="fab fa-vk"></i> ВК</a>,
-				<a href="https://t.me/yakubovich" target="_blank"><i class="fab fa-telegram-plane"></i> телеграме</a> или звоните
-				<a href="tel:+79021310072"><i class="fas fa-phone-alt"></i> 8(902)131-00-72</a>
-			</p>
-		</noindex>
+		<p class="headerinfo">
+			По всем вопросам пишите
+			<a href="https://vk.com/ya432209" target="_blank"><i class="fab fa-vk"></i> ВК</a>,
+			<a href="https://t.me/yakubovich" target="_blank"><i class="fab fa-telegram-plane"></i> телеграме</a>
+			или звоните
+			<a href="tel:+79021310072"><i class="fas fa-phone-alt"></i> 8(902)131-00-72</a>
+		</p>
 
 
 		<div v-show="showlist==='b'">
@@ -160,6 +159,9 @@
 				</tr>
 			</table>
 		</div>
+		<p style="margin-top: 1em; font-size: .8em;">
+			Пластинок в каталоге: {{AllCount}}
+		</p>
 	</div>
 	<script>
 
@@ -206,6 +208,9 @@
 				}
 			},
 			computed: {
+				AllCount() {
+					return this.vinyls.length
+				},
 				count() {
 					if (this.checkeds.length == 0)
 						this.selected = false;
