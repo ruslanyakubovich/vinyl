@@ -7,7 +7,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="icon" href="favicon.ico" />
-	<link href="style.css?210510" rel="stylesheet">
+	<link href="style.css?210514" rel="stylesheet">
 	<!-- https://fontawesome.com/icons -->
 	<link href="/wf/css/all.css" rel="stylesheet">
 </head>
@@ -125,7 +125,6 @@
 			<table>
 				<tr>
 					<th></th>
-					<th></th>
 					<th>
 						<a :class="ca('artists')" @click="sortParam='artists'">Исполнитель</a>
 						/
@@ -136,8 +135,14 @@
 					<th>Лейбл/Жанр</th>
 				</tr>
 				<tr v-for="x in sortedList" v-bind:key="x.id">
-					<td><input type="checkbox" v-model="checkeds" :value="x.id"></td>
-					<td class="img"><img :src="x.thumb"></td>
+					<td>
+						<div class="img">
+							<label>
+								<input type="checkbox" v-model="checkeds" :value="x.id">
+								<img :src="x.thumb">
+							</label>
+						</div>
+					</td>
 					<td>
 						<span :class="ca('title')"><i class="fas fa-record-vinyl"></i> {{ x.title }}<br></span>
 						<span :class="ca('artists')"><i class="fas fa-user-circle"></i> {{ x.artists

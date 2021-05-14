@@ -120,7 +120,7 @@ pre {
 	}
 }
 
-.item input[type="checkbox"] {
+.img input[type="checkbox"] {
 	position: absolute;
 }
 
@@ -179,6 +179,7 @@ footer {
 
 .img {
 	max-width: 70px;
+	min-width: 5em;
 }
 
 td i.fas, td i.far, p i.fas, p i.far, p i.fab {
