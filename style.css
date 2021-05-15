@@ -23,7 +23,12 @@ body {
 		margin-top: 5em;
 	} 
 }
-
+ 
+@media print {
+	.print-hide{
+		display: none;
+	} 
+}
 a {
 	color: var(--ColorA);
 }

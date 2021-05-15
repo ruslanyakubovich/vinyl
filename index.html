@@ -7,14 +7,14 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="icon" href="favicon.ico" />
-	<link href="style.css?210514" rel="stylesheet">
+	<link href="style.css?210515" rel="stylesheet">
 	<!-- https://fontawesome.com/icons -->
 	<link href="/wf/css/all.css" rel="stylesheet">
 </head>
 
 <body>
 	<div id="app">
-		<ul class="menu">
+		<ul class="menu print-hide">
 			<li>
 				<input type="search" v-model="search" placeholder="Поиск">
 			</li>
@@ -57,10 +57,12 @@
 			</li>
 		</ul>
 		<p class="headerinfo">
-			По всем вопросам пишите
-			<a href="https://vk.com/ya432209" target="_blank"><i class="fab fa-vk"></i> ВК</a>,
-			<a href="https://t.me/yakubovich" target="_blank"><i class="fab fa-telegram-plane"></i> телеграме</a>
-			или звоните
+			<span class="print-hide">
+				По всем вопросам пишите
+				<a href="https://vk.com/ya432209" target="_blank"><i class="fab fa-vk"></i> ВК</a>,
+				<a href="https://t.me/yakubovich" target="_blank"><i class="fab fa-telegram-plane"></i> телеграме</a>
+				или звоните
+			</span>
 			<a href="tel:+79021310072"><i class="fas fa-phone-alt"></i> 8(902)131-00-72</a>
 		</p>
 
