@@ -75,7 +75,7 @@
 						<div class="img">
 							<label>
 								<input type="checkbox" v-model="checkeds" :value="x.id">
-								<img :src="x.thumb">
+								<img :data-src="'/img/' + x.id + '.jpg'" class="lazy">
 							</label>
 						</div>
 						<div class="info">
@@ -142,7 +142,7 @@
 						<div class="img">
 							<label>
 								<input type="checkbox" v-model="checkeds" :value="x.id">
-								<img :src="x.thumb">
+								<img :data-src="'/img/' + x.id + '.jpg'" class="lazy">
 							</label>
 						</div>
 					</td>
@@ -263,6 +263,35 @@
 	<noscript>
 		<div><img src="https://mc.yandex.ru/watch/71089129" style="position:absolute; left:-9999px;" alt="" /></div>
 	</noscript> <!-- /Yandex.Metrika counter -->
+
+
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			var lazyloadThrottleTimeout;
+
+			function lazyload() {
+				if (lazyloadThrottleTimeout) {
+					clearTimeout(lazyloadThrottleTimeout);
+				}
+
+				lazyloadImages = document.querySelectorAll("img.lazy");
+
+				lazyloadThrottleTimeout = setTimeout(function () {
+					lazyloadImages.forEach(function (img) {
+						if ((img.getBoundingClientRect().top < window.innerHeight)) {
+							console.log(img.getBoundingClientRect().top , window.innerHeight)
+							img.src = img.dataset.src;
+							img.classList.remove('lazy');
+						}
+					});
+				}, 20);
+			}
+
+			document.addEventListener("scroll", lazyload);
+			window.addEventListener("resize", lazyload);
+			window.addEventListener("orientationChange", lazyload);
+		});
+	</script>
 </body>
 
 </html>
