@@ -24,17 +24,17 @@ function ClearKeys($keys, $arr){
 		
 	if (isset($arr["styles"])){
 		$arr["genres"] = array_merge($arr["styles"], $arr["genres"]);
-		$arr["genres"] = join($arr["genres"], ', ');
+		$arr["genres"] = is_array($arr["genres"])? join(', ', $arr["genres"]) : $arr["genres"];
 		unset($arr["styles"]);
 	}
 	foreach($arr["artists"] as $k => $v)
 		$arr["artists"][$k] = $v["name"];
-	$arr["artists"] = join($arr["artists"], ', ');
+	$arr["artists"] = join(', ', $arr["artists"]);
 
 
 	foreach($arr["labels"] as $k => $v)
 		$arr["labels"][$k] = $v["name"];
-	$arr["labels"] = join($arr["labels"], ', ');
+	$arr["labels"] = join(', ', $arr["labels"]);
 	
 	return $arr;
 }
@@ -73,7 +73,7 @@ foreach ($fID as $id => $name) {
 		if (isset($v["notes"])){
 			foreach($v["notes"] as $k2 => $v2)
 				$v["notes"][$k2] = $v2["value"];
-			$v["notes"] = join($v["notes"], ', ');
+			$v["notes"] = join(', ', $v["notes"]);
 		}
 
 		$d["releases"][$k] = array_merge($v, ClearKeys($SetKeys, $v["basic_information"]));
