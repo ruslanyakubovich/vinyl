@@ -1,6 +1,6 @@
 <?php 
 
-define('dAuthorization', sprintf('Authorization: Discogs token=%s', file_get_contents('token')));
+define('dAuthorization', sprintf('Authorization: Discogs token=%s', file_get_contents('token.txt')));
 define('dFolder', 'https://api.discogs.com/users/roosyak/collection/folders/%d');
 
 $fID = [
